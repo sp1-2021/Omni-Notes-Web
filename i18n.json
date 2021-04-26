@@ -1,8 +1,11 @@
 {
-    "locales": ["en", "tr"],
-    "defaultLocale": "en",
-    "pages": {
-        "*": ["common"],
-        "/": ["home"]
-    }
+  "locales": [
+    "en",
+    "pl"
+  ],
+  "defaultLocale": "en",
+  "pages": {
+    "*": ["common"],
+    "/": ["home"]
+  }
 }

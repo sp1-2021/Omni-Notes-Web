@@ -1,12 +1,12 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from 'react';
 import {
   render as baseRender,
   RenderOptions,
   RenderResult,
-} from "@testing-library/react";
+} from '@testing-library/react';
 
-import { ChakraProvider } from "@chakra-ui/react";
-import theme from "@definitions/chakra/theme";
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '@definitions/chakra/theme';
 
 /**
  * Custom renderer example with @testing-library/react
@@ -16,7 +16,7 @@ import theme from "@definitions/chakra/theme";
  * please visit https://testing-library.com/docs/react-testing-library/setup
  */
 
-export const AllTheProviders = ({ children }) => {
+export const AllTheProviders: React.FC = ({ children }) => {
   return (
     <>
       <ChakraProvider theme={theme}>{children}</ChakraProvider>
@@ -24,11 +24,14 @@ export const AllTheProviders = ({ children }) => {
   );
 };
 
-const render = (ui: ReactElement, options?: Omit<RenderOptions, "queries">) =>
+const render = (
+  ui: ReactElement,
+  options?: Omit<RenderOptions, 'queries'>
+): RenderResult =>
   baseRender(ui, { wrapper: AllTheProviders, ...options }) as RenderResult;
 
 // re-export everything
-export * from "@testing-library/react";
+export * from '@testing-library/react';
 
 // override render method
 export { render };

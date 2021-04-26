@@ -1,10 +1,5 @@
 {
-    "hello": "Hello",
-    "greet": "Hello, {{name}}!",
-    "world": "World",
-    "documentation": "Go To Documentation",
-    "language": {
-        "tr": "🇹🇷 Türkçe",
-        "en": "🇺🇸 English"
-    }
+  "app_name": "Omni Notes",
+  "switch_lang": "Switch language",
+  "sign_out": "Sign out"
 }
