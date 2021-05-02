@@ -27,7 +27,7 @@ const Home: React.FC = () => {
           <NoteList />
         </Box>
         <Box flex={1}>
-          <Editor initialEditType="wysiwyg" />
+          <Editor initialEditType="wysiwyg" height="100%" />
         </Box>
       </Stack>
     </Stack>

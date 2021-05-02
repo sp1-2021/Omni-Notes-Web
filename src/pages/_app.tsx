@@ -5,7 +5,7 @@ import theme from '@/definitions/chakra/theme';
 import { Provider } from 'next-auth/client';
 
 import 'codemirror/lib/codemirror.css';
-import '@toast-ui/editor/dist/toastui-editor.css';
+import '../styles/editor.css';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
