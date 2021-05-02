@@ -14,9 +14,11 @@
     "cypress:test": "start-server-and-test start http://localhost:3000 cypress:run"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.12",
     "@chakra-ui/react": "^1.1.4",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
+    "@toast-ui/react-editor": "^2.5.3",
     "framer-motion": "^3.2.1",
     "markdown-it": "^12.0.6",
     "next": "10.1.2",
