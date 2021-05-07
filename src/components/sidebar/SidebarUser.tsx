@@ -11,7 +11,13 @@ export const SidebarUser: React.FC = () => {
         <Text as="span" noOfLines={1}>
           {session.user.name}
         </Text>
-        <Text as="span" noOfLines={1}>
+        <Text
+          as="span"
+          noOfLines={1}
+          maxWidth={'200px'}
+          textOverflow={'ellipsis'}
+          overflow={'hidden'}
+        >
           {session.user.email}
         </Text>
       </Stack>

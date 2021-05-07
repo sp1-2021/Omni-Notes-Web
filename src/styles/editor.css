@@ -326,22 +326,26 @@
 }
 
 .tui-editor-defaultUI .te-switch-button {
+  box-sizing: border-box;
   width: 92px;
   height: inherit;
-  background: #e5e5e5;
+  background: var(--chakra-colors-gray-800);
   outline: 0;
-  color: #a0aabf;
+  color: #777;
+  font-size: 13px;
   cursor: pointer;
-  margin-left: 3px;
-  border: 0;
+  margin: 0 3px;
+  padding: 0 9px;
   border-radius: 5px;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  transition: all .3s;
 }
 
 .tui-editor-defaultUI .te-switch-button.active {
-  background-color: #fff;
-  color: #000;
+  color: #fff;
+}
+
+.tui-editor-defaultUI .te-switch-button:hover {
+  color: #fff;
 }
 
 .tui-editor-defaultUI .te-markdown-tab-section {
@@ -359,7 +363,6 @@
   background-color: var(--chakra-colors-gray-800);
   border-radius: 5px;
   margin: 0 3px;
-  border-top: 0;
   padding: 0 9px;
   color: #777;
   outline: 0;
@@ -379,8 +382,7 @@
 }
 
 .te-markdown-tab-section .te-tab button:hover {
-  background-color: #fff;
-  color: #333;
+  color: #fff;
 }
 
 .tui-popup-modal-background {
@@ -1130,7 +1132,7 @@ only screen and (min-resolution: 2dppx) {
 .tui-popup-code-block-editor .CodeMirror-line {
   font-family: Consolas, Courier, 'Lucida Grande', '나눔바른고딕', 'Nanum Barun Gothic', '맑은고딕',
   'Malgun Gothic', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 160%;
   letter-spacing: -0.3px;
 }
@@ -1799,3 +1801,6 @@ only screen and (min-resolution: 2dppx) {
   'Malgun Gothic', sans-serif;
 }
 
+.CodeMirror-code {
+  font-size: 16px;
+}
