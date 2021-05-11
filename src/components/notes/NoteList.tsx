@@ -27,6 +27,11 @@ export const NoteList: React.FC = () => {
     setCreating(false);
   };
 
+  const onNoteClick = async (id: string) => {
+    const note = await noteManager.fetch(id);
+    console.log(note);
+  };
+
   const onDeleteNoteClick = async (id: string) => {
     setDeleting({ ...isDeleting, [id]: true });
     await noteManager.remove(id);
@@ -67,6 +72,7 @@ export const NoteList: React.FC = () => {
               date={note.modifiedTime}
               desc={note.excerpt}
               isDeleting={isDeleting[note.id]}
+              onClick={() => onNoteClick(note.id)}
               onDeleteClick={() => onDeleteNoteClick(note.id)}
             />
           ))

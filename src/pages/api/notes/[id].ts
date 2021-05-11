@@ -3,8 +3,23 @@ import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
 
 const handler = createRequestHandler();
 
+/**
+ * Handle fetching content of note with given id
+ */
 handler.get(async (req, res) => {
   const { id } = req.query;
+  const drive = await getGoogleDriveClient(req);
+
+  try {
+    const response = await drive.files.get({
+      fileId: id as string,
+      alt: 'media',
+    });
+    const note = response.data;
+    res.json(note);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 /**

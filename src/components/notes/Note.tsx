@@ -16,6 +16,7 @@ interface NoteProps {
   date?: string;
   isLoading?: boolean;
   isDeleting?: boolean;
+  onClick?(): void;
   onDeleteClick?(): void;
 }
 
@@ -25,6 +26,7 @@ export const Note: React.FC<NoteProps> = ({
   date,
   isLoading,
   isDeleting,
+  onClick,
   onDeleteClick,
 }) => {
   return (
@@ -48,6 +50,7 @@ export const Note: React.FC<NoteProps> = ({
           borderBottom: 'none',
         },
       }}
+      onClick={onClick}
     >
       <Circle size={2} bgColor={isLoading ? 'transparent' : 'red.500'} mt={2} />
       <HStack
