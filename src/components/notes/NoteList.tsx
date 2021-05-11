@@ -4,6 +4,8 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { useNoteList } from '@/hooks/notes/useNoteList';
 import { useNoteManager } from '@/hooks/notes/useNoteManager';
 import { useState } from 'react';
+import { dispatch } from 'use-bus';
+import { NOTE_SELECTED_EVENT } from '@/const/event.const';
 
 const noteSkeletons = Array(4)
   .fill(0)
@@ -29,7 +31,10 @@ export const NoteList: React.FC = () => {
 
   const onNoteClick = async (id: string) => {
     const note = await noteManager.fetch(id);
-    console.log(note);
+    dispatch({
+      type: NOTE_SELECTED_EVENT,
+      note,
+    });
   };
 
   const onDeleteNoteClick = async (id: string) => {
