@@ -1,4 +1,4 @@
-import { getGoogleDriveClient } from '@/utils/getGoogleDriveClient';
+import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
 import { v4 as uuid } from 'uuid';
 import { NOTE_FILE_EXT, NOTE_FILE_MIME_TYPE } from '@/const/drive.const';
 import { getTimestamp } from '@/utils/getTimestamp';
@@ -6,6 +6,7 @@ import { Note } from '@/types/note/note';
 import { ListFilesResponse } from '@/types/list-files-response';
 import { NoteEntry } from '@/types/note/note-entry';
 import { createRequestHandler } from '@/utils/createRequestHandler';
+import { getNoteExcerpt } from '@/utils/note/getNoteExcerpt';
 
 const handler = createRequestHandler();
 
@@ -24,6 +25,7 @@ handler.get(async (req, res) => {
       ({ id, properties, modifiedTime }) => ({
         id,
         title: properties.title,
+        excerpt: properties.excerpt,
         modifiedTime,
       })
     );
@@ -48,6 +50,7 @@ handler.post(async (req, res) => {
     mimeType: NOTE_FILE_MIME_TYPE,
     properties: {
       title: note.title,
+      excerpt: getNoteExcerpt(note),
     },
   };
   const media = {

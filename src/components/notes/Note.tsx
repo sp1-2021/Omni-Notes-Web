@@ -68,10 +68,10 @@ export const Note: React.FC<NoteProps> = ({
               {title}
             </Text>
           </Skeleton>
-          <SkeletonText isLoaded={!isLoading} noOfLines={3}>
+          <SkeletonText isLoaded={!isLoading} noOfLines={2}>
             <Text
               color={useColorModeValue('gray.900', 'gray.400')}
-              noOfLines={3}
+              noOfLines={2}
             >
               {desc}
             </Text>

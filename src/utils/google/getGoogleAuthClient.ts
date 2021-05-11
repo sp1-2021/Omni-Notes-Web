@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http';
 import { google } from 'googleapis';
-import { getAccessToken } from '@/utils/getAccessToken';
+import { getGoogleAccessToken } from '@/utils/google/getGoogleAccessToken';
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -9,7 +9,7 @@ const oAuth2Client = new google.auth.OAuth2(
 );
 
 export const getGoogleAuthClient = async (req: IncomingMessage) => {
-  const token = await getAccessToken(req);
+  const token = await getGoogleAccessToken(req);
   oAuth2Client.setCredentials({
     access_token: token,
   });

@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http';
 import { google } from 'googleapis';
-import { getGoogleAuthClient } from '@/utils/getGoogleAuthClient';
+import { getGoogleAuthClient } from '@/utils/google/getGoogleAuthClient';
 
 export const getGoogleDriveClient = async (req: IncomingMessage) => {
   const auth = await getGoogleAuthClient(req);

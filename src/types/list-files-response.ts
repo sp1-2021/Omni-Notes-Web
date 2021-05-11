@@ -3,5 +3,6 @@ export interface ListFilesResponse {
   modifiedTime: string;
   properties: {
     title: string;
+    excerpt: string;
   };
 }
