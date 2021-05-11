@@ -19,6 +19,11 @@ const overrides = {
   fontSizes,
 };
 
-const theme = extendTheme(overrides);
+const theme = extendTheme({
+  config: {
+    initialColorMode: 'dark',
+  },
+  ...overrides,
+});
 
 export default theme;

@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react';
 
 import { ChakraProvider } from '@chakra-ui/react';
-import theme from '@definitions/chakra/theme';
+import theme from '@/definitions/chakra/theme';
 
 /**
  * Custom renderer example with @testing-library/react
