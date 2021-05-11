@@ -15,15 +15,16 @@ export const useNoteManager = () => {
         await axios.post('notes', note);
         revalidate();
         toast({
-          title: 'Sukces',
+          title: 'Hooray!',
           status: 'success',
-          description: 'Pomyślnie utworzono nową notatkę!',
+          description: 'Your new note is ready to go!',
         });
       } catch (error) {
         toast({
-          title: 'Upsss...',
+          title: 'Whopsss...',
           status: 'error',
-          description: 'Podczas tworzenia notatki wystąpił błąd',
+          description:
+            'An error has occured while creating your note. Please try again!',
         });
         console.error(error);
       }
@@ -37,15 +38,16 @@ export const useNoteManager = () => {
         await axios.delete(`notes/${id}`);
         revalidate();
         toast({
-          title: 'Sukces',
+          title: 'Hooray!',
           status: 'success',
-          description: 'Pomyślnie usunięto notatkę',
+          description: 'Selected note has been successfuly deleted',
         });
       } catch (error) {
         toast({
-          title: 'Upsss...',
+          title: 'Whopsss...',
           status: 'error',
-          description: 'Podczas usuwania notatki wystąpił błąd',
+          description:
+            'An error has occured while deleting selected note. Please try again!',
         });
         console.error(error);
       }
@@ -60,9 +62,10 @@ export const useNoteManager = () => {
         return response.data;
       } catch (error) {
         toast({
-          title: 'Upsss...',
+          title: 'Whopsss...',
           status: 'error',
-          description: 'Podczas pobierania notatki wystąpił błąd',
+          description:
+            'An error has occurred while trying to fetch note content. Please try again!',
         });
         console.error(error);
       }

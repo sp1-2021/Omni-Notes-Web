@@ -50,7 +50,11 @@ export const Note: React.FC<NoteProps> = ({
           borderBottom: 'none',
         },
       }}
-      onClick={onClick}
+      onClick={() => {
+        if (!isDeleting) {
+          onClick?.();
+        }
+      }}
     >
       <Circle size={2} bgColor={isLoading ? 'transparent' : 'red.500'} mt={2} />
       <HStack
