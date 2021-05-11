@@ -1,5 +1,3 @@
-import nc from 'next-connect';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { getGoogleDriveClient } from '@/utils/getGoogleDriveClient';
 import { v4 as uuid } from 'uuid';
 import { NOTE_FILE_EXT, NOTE_FILE_MIME_TYPE } from '@/const/drive.const';
@@ -7,8 +5,9 @@ import { getTimestamp } from '@/utils/getTimestamp';
 import { Note } from '@/types/note/note';
 import { ListFilesResponse } from '@/types/list-files-response';
 import { NoteEntry } from '@/types/note/note-entry';
+import { createRequestHandler } from '@/utils/createRequestHandler';
 
-const handler = nc<NextApiRequest, NextApiResponse>();
+const handler = createRequestHandler();
 
 /**
  * Note list request handler

@@ -2,7 +2,7 @@ import { Button, HStack, Input, Stack } from '@chakra-ui/react';
 import { Note } from '@/components/notes/Note';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useNoteList } from '@/hooks/notes/useNoteList';
-import { useNoteCreator } from '@/hooks/notes/useNoteCreator';
+import { useNoteManager } from '@/hooks/notes/useNoteManager';
 import { useState } from 'react';
 
 const noteSkeletons = Array(4)
@@ -11,17 +11,23 @@ const noteSkeletons = Array(4)
 
 export const NoteList: React.FC = () => {
   const { data: notes, error } = useNoteList();
-  const createNote = useNoteCreator();
-  const isLoading = !notes && !error;
+  const noteManager = useNoteManager();
   const [isCreating, setCreating] = useState(false);
+  const [isDeleting, setDeleting] = useState<Record<string, boolean>>({});
 
   const onNewNoteClick = async () => {
     setCreating(true);
-    await createNote({
+    await noteManager.create({
       title: 'Another one',
       content: 'Example content',
     });
     setCreating(false);
+  };
+
+  const onDeleteNoteClick = async (id: string) => {
+    setDeleting({ ...isDeleting, [id]: true });
+    await noteManager.remove(id);
+    setDeleting({ ...isDeleting, [id]: false });
   };
 
   return (
@@ -48,7 +54,7 @@ export const NoteList: React.FC = () => {
           },
         }}
       >
-        {isLoading
+        {!notes
           ? noteSkeletons
           : notes.map((note) => (
               <Note
@@ -56,6 +62,8 @@ export const NoteList: React.FC = () => {
                 title={note.title}
                 date={note.modifiedTime}
                 desc="Todo"
+                isDeleting={isDeleting[note.id]}
+                onDeleteClick={() => onDeleteNoteClick(note.id)}
               />
             ))}
       </Stack>
