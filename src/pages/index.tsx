@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { getSession, useSession } from 'next-auth/client';
-import { Box, Container, HStack, Stack } from '@chakra-ui/react';
+import { Box, Stack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 import { Editor } from '@/components/editor/Editor';
 import { Navbar } from '@/components/navbar/Navbar';
 import { NoteList } from '@/components/notes/NoteList';
 import { Sidebar } from '@/components/sidebar/Sidebar';
+import useBus from 'use-bus';
+import { NOTE_SELECTED_EVENT } from '@/const/event.const';
+import { Note } from '@/types/note/note';
 
 const Home: React.FC = () => {
   const { t, lang } = useTranslation();
-  const [session, loading] = useSession();
+  const [_, loading] = useSession();
+  const editorRef = useRef<toastui.Editor | null>(null);
+
+  useBus(
+    NOTE_SELECTED_EVENT,
+    (event) => {
+      const note: Note = event.note;
+      if (editorRef.current) {
+        editorRef.current.setMarkdown(note.content);
+      }
+    },
+    []
+  );
 
   if (loading) {
     return <div>Loading</div>;
@@ -27,28 +42,15 @@ const Home: React.FC = () => {
           <NoteList />
         </Box>
         <Box flex={1}>
-          <Editor initialEditType="wysiwyg" height="100%" />
+          <Editor
+            events={{ load: (editor) => (editorRef.current = editor) }}
+            initialEditType="wysiwyg"
+            height="100%"
+          />
         </Box>
       </Stack>
     </Stack>
   );
-
-  // return (
-  //   <Stack>
-  //     <Heading>
-  //       {t('common:app_name')} - {t('home:title')}
-  //     </Heading>
-  //     <pre>{JSON.stringify(session, null, 2)}</pre>
-  //     <Button onClick={() => setLanguage(lang === 'en' ? 'pl' : 'en')}>
-  //       {t('common:switch_lang')}
-  //     </Button>
-  //     <Button onClick={() => signOut()}>{t('common:sign_out')}</Button>
-  //     <MdEditor
-  //       style={{ height: '500px' }}
-  //       renderHTML={(text) => remarkable.render(text)}
-  //     />
-  //   </Stack>
-  // );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

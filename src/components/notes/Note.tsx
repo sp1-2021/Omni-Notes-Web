@@ -1,20 +1,34 @@
 import {
   Circle,
+  HStack,
+  IconButton,
   Skeleton,
   SkeletonText,
   Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 interface NoteProps {
   title?: string;
   desc?: string;
   date?: string;
   isLoading?: boolean;
+  isDeleting?: boolean;
+  onClick?(): void;
+  onDeleteClick?(): void;
 }
 
-export const Note: React.FC<NoteProps> = ({ title, desc, date, isLoading }) => {
+export const Note: React.FC<NoteProps> = ({
+  title,
+  desc,
+  date,
+  isLoading,
+  isDeleting,
+  onClick,
+  onDeleteClick,
+}) => {
   return (
     <Stack
       cursor="pointer"
@@ -36,9 +50,15 @@ export const Note: React.FC<NoteProps> = ({ title, desc, date, isLoading }) => {
           borderBottom: 'none',
         },
       }}
+      onClick={() => {
+        if (!isDeleting) {
+          onClick?.();
+        }
+      }}
     >
       <Circle size={2} bgColor={isLoading ? 'transparent' : 'red.500'} mt={2} />
-      <Stack
+      <HStack
+        role="group"
         flex={1}
         transition="all 0.2s ease-in"
         className="note-content"
@@ -49,20 +69,40 @@ export const Note: React.FC<NoteProps> = ({ title, desc, date, isLoading }) => {
         )}
         pb={4}
       >
-        <Skeleton isLoaded={!isLoading} height={4} width={isLoading && 36}>
-          <Text mb={1} fontWeight="bold">
-            {title}
-          </Text>
-        </Skeleton>
-        <SkeletonText isLoaded={!isLoading} noOfLines={3}>
-          <Text color={useColorModeValue('gray.900', 'gray.400')} noOfLines={3}>
-            {desc}
-          </Text>
-        </SkeletonText>
-        <Skeleton isLoaded={!isLoading} height={4} width={isLoading && 20}>
-          <Text color={useColorModeValue('gray.800', 'gray.500')}>{date}</Text>
-        </Skeleton>
-      </Stack>
+        <Stack flex={1}>
+          <Skeleton isLoaded={!isLoading} height={4} width={isLoading && 36}>
+            <Text mb={1} fontWeight="bold">
+              {title}
+            </Text>
+          </Skeleton>
+          <SkeletonText isLoaded={!isLoading} noOfLines={2}>
+            <Text
+              color={useColorModeValue('gray.900', 'gray.400')}
+              noOfLines={2}
+            >
+              {desc}
+            </Text>
+          </SkeletonText>
+          <Skeleton isLoaded={!isLoading} height={4} width={isLoading && 20}>
+            <Text color={useColorModeValue('gray.800', 'gray.500')}>
+              {date}
+            </Text>
+          </Skeleton>
+        </Stack>
+        <IconButton
+          isLoading={isDeleting}
+          isDisabled={isDeleting}
+          opacity={0}
+          aria-label="Delete note"
+          icon={<AiOutlineDelete />}
+          variant="ghost"
+          transition="all 0.1s ease-in"
+          _groupHover={{
+            opacity: 1,
+          }}
+          onClick={onDeleteClick}
+        />
+      </HStack>
     </Stack>
   );
 };

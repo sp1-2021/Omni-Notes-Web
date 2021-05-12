@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Img, Stack, Text } from '@chakra-ui/react';
+import { HStack, Img, Stack, Text } from '@chakra-ui/react';
 import { SidebarUser } from '@/components/sidebar/SidebarUser';
 import { SidebarLink } from '@/components/sidebar/SidebarLink';
 import { FaRegStickyNote } from 'react-icons/fa';
