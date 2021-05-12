@@ -1,0 +1,1 @@
+export const NOTE_SELECTED_EVENT = '@@ui/NOTE_SELECTED';
