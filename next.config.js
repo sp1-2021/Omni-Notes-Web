@@ -5,7 +5,7 @@ const nextTranslate = require('next-translate');
 const config = {
   target: 'serverless',
   future: {
-    webpack5: true,
+    webpack5: false,
   },
 };
 
