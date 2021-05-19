@@ -5,8 +5,8 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[context.production]
+[context.production.environment]
   NEXTAUTH_URL = "https://sp1-omni-notes.netlify.app"
 
-[context.develop]
+[context.develop.environment]
   NEXTAUTH_URL = "https://develop--sp1-omni-notes.netlify.app"
