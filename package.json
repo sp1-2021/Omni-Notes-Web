@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint **/*.{js,jsx,ts,tsx}",
     "prettier": "prettier --write **/*.{js,jsx,ts,tsx}",
@@ -39,7 +39,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^1.1.5",
+    "@netlify/plugin-nextjs": "^3.3.0",
     "@testing-library/react": "^11.2.3",
     "@testing-library/react-hooks": "^5.0.0",
     "@types/node": "^14.14.13",
