@@ -1,7 +1,7 @@
 import { getTimestamp } from '@/utils/getTimestamp';
 import { Note } from '@/types/note/note';
 
-export const createNote = (title: string): Note => {
+export const createNote = (title: string): Omit<Note, 'fileName'> => {
   const timestamp = getTimestamp();
 
   return {
