@@ -96,10 +96,28 @@ export const useNoteManager = () => {
     [axios, toast]
   );
 
+  const archive = useCallback(
+    async (id: string) => {
+      try {
+        return await axios.post(`notes/${id}/archive`);
+      } catch (error) {
+        toast({
+          title: 'Whopsss...',
+          status: 'error',
+          description:
+            'An error has occurred while trying to archive note. Please try again!',
+        });
+        console.error(error);
+      }
+    },
+    [axios, toast]
+  );
+
   return {
     create,
     remove,
     fetch,
     update,
+    archive,
   };
 };

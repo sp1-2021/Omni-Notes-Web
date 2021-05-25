@@ -5,5 +5,6 @@ export interface ListFilesResponse {
     title: string;
     excerpt: string;
     trashed: string;
+    archived: string;
   };
 }

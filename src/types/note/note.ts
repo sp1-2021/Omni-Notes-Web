@@ -5,12 +5,12 @@ export interface Note {
   fileName: string;
   creation: number;
   lastModification: number;
-  passwordChecked: false;
-  archived: false;
+  passwordChecked: boolean;
+  archived: boolean;
   attachmentsList: Attachment[];
   checklist: boolean;
   locked: boolean;
-  reminderFired: false;
-  trashed: false;
+  reminderFired: boolean;
+  trashed: boolean;
   content: string;
 }

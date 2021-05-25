@@ -6,20 +6,25 @@ import {
   SkeletonText,
   Stack,
   Text,
+  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { format, fromUnixTime } from 'date-fns';
+import { format } from 'date-fns';
 import { useMemo } from 'react';
+import { FiArchive } from 'react-icons/fi';
 
 interface NoteProps {
   title?: string;
   desc?: string;
   date?: string;
   isLoading?: boolean;
+  isArchived?: boolean;
   isDeleting?: boolean;
+  isArchiving?: boolean;
   onClick?(): void;
   onDeleteClick?(): void;
+  onArchiveClick?(): void;
 }
 
 export const Note: React.FC<NoteProps> = ({
@@ -27,9 +32,12 @@ export const Note: React.FC<NoteProps> = ({
   desc,
   date,
   isLoading,
+  isArchived,
   isDeleting,
+  isArchiving,
   onClick,
   onDeleteClick,
+  onArchiveClick,
 }) => {
   const formattedDate = useMemo(
     () =>
@@ -64,7 +72,13 @@ export const Note: React.FC<NoteProps> = ({
         }
       }}
     >
-      <Circle size={2} bgColor={isLoading ? 'transparent' : 'red.500'} mt={2} />
+      <Circle
+        size={2}
+        bgColor={
+          isLoading ? 'transparent' : isArchived ? 'green.500' : 'red.500'
+        }
+        mt={2}
+      />
       <HStack
         role="group"
         flex={1}
@@ -97,19 +111,40 @@ export const Note: React.FC<NoteProps> = ({
             </Text>
           </Skeleton>
         </Stack>
-        <IconButton
-          isLoading={isDeleting}
-          isDisabled={isDeleting}
+        <HStack
           opacity={0}
-          aria-label="Delete note"
-          icon={<AiOutlineDelete />}
-          variant="ghost"
-          transition="all 0.1s ease-in"
           _groupHover={{
             opacity: 1,
           }}
-          onClick={onDeleteClick}
-        />
+          transition="all 0.1s ease-in"
+        >
+          <Tooltip label="Archive note">
+            <IconButton
+              isLoading={isArchiving}
+              isDisabled={isArchiving || isDeleting}
+              aria-label="Archive note"
+              icon={<FiArchive />}
+              variant="ghost"
+              onClick={(event) => {
+                event.stopPropagation();
+                onArchiveClick?.();
+              }}
+            />
+          </Tooltip>
+          <Tooltip label="Delete note">
+            <IconButton
+              isLoading={isDeleting}
+              isDisabled={isDeleting || isArchiving}
+              aria-label="Delete note"
+              icon={<AiOutlineDelete />}
+              variant="ghost"
+              onClick={(event) => {
+                event.stopPropagation();
+                onDeleteClick?.();
+              }}
+            />
+          </Tooltip>
+        </HStack>
       </HStack>
     </Stack>
   );

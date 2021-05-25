@@ -26,8 +26,9 @@ handler.get(async (req, res) => {
       .filter((file) => file.properties.trashed !== 'true')
       .map<NoteListRecord>(({ id, properties, name }) => ({
         id,
-        title: properties.title,
-        excerpt: properties.excerpt,
+        title: properties.title ?? '',
+        excerpt: properties.excerpt ?? '',
+        archived: JSON.parse(properties.archived ?? 'false'),
         fileName: name,
         modifiedTime: extractModificationTimestampFromFileName(name),
       }));

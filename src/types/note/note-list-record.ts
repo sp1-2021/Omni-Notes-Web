@@ -3,5 +3,6 @@ export interface NoteListRecord {
   title: string;
   fileName: string;
   excerpt: string;
+  archived: boolean;
   modifiedTime: string;
 }

@@ -4,5 +4,6 @@ export const useToast = () => {
   return useChakraToast({
     variant: 'solid',
     position: 'top-right',
+    isClosable: true,
   });
 };
