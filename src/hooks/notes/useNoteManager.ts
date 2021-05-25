@@ -3,6 +3,7 @@ import { useNoteList } from '@/hooks/notes/useNoteList';
 import { useToast } from '@/hooks/utils/useToast';
 import { useAxios } from '@/lib/axios/useAxios';
 import { Note } from '@/types/note/note';
+import { NoteListRecord } from '@/types/note/note-list-record';
 
 export const useNoteManager = () => {
   const toast = useToast();
@@ -56,10 +57,13 @@ export const useNoteManager = () => {
   );
 
   const fetch = useCallback(
-    async (id: string) => {
+    async (record: NoteListRecord) => {
       try {
-        const response = await axios.get<Note>(`notes/${id}`);
-        return response.data;
+        const response = await axios.get<Note>(`notes/${record.id}`);
+        return {
+          ...response.data,
+          fileName: record.fileName,
+        };
       } catch (error) {
         toast({
           title: 'Whopsss...',
@@ -74,9 +78,11 @@ export const useNoteManager = () => {
   );
 
   const update = useCallback(
-    async (id: string, note: Partial<Note>) => {
+    async (id: string, current: Note, next: Partial<Note>) => {
       try {
-        return await axios.put(`notes/${id}`, { note });
+        return await axios.put(`notes/${id}`, {
+          note: Object.assign({}, current, next),
+        });
       } catch (error) {
         toast({
           title: 'Whopsss...',

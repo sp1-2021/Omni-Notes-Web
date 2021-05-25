@@ -8,8 +8,6 @@ import { Note } from '@/types/note/note';
  * which is a key-value pair. The maximum size of this pair is 124B,
  * and the key "excerpt" takes 7B from that pool, so we return 117 characters.)
  */
-export const getNoteExcerpt = (note: Note) => {
-  return note.content
-    ? note.content.replace(/\s+/g, ' ').trim().substr(0, 117)
-    : '';
+export const getNoteExcerpt = (content: string) => {
+  return content ? content.replace(/\s+/g, ' ').trim().substr(0, 117) : '';
 };

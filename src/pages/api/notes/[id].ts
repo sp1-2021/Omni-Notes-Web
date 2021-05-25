@@ -3,6 +3,8 @@ import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
 import { Note } from '@/types/note/note';
 import { getTimestamp } from '@/utils/getTimestamp';
 import { generateUpdatedNoteFileName } from '@/utils/note/generateUpdatedNoteFileName';
+import { NOTE_FILE_MIME_TYPE } from '@/const/drive.const';
+import { getNoteExcerpt } from '@/utils/note/getNoteExcerpt';
 
 const handler = createRequestHandler();
 
@@ -51,17 +53,29 @@ handler.delete(async (req, res) => {
  * Handle updating note with a given ID
  */
 handler.put(async (req, res) => {
-  const { id } = req.query;
-  const note: Note = req.body;
   const drive = await getGoogleDriveClient(req);
-  const timestamp = await getTimestamp();
+  const { id } = req.query;
+  const { fileName, ...note }: Note = {
+    ...req.body.note,
+    lastModification: getTimestamp(),
+  };
+
+  const requestBody = {
+    name: generateUpdatedNoteFileName(fileName),
+    properties: {
+      title: note.title,
+      excerpt: getNoteExcerpt(note.content),
+    },
+  };
+  const media = {
+    body: JSON.stringify(note, null, 2),
+  };
 
   try {
     await drive.files.update({
+      media,
+      requestBody,
       fileId: id as string,
-      requestBody: {
-        name: generateUpdatedNoteFileName(note.fileName),
-      },
     });
     res.json({ success: 'Note has been succesfully deleted' });
   } catch (error) {

@@ -54,7 +54,6 @@ handler.post(async (req, res) => {
     properties: {
       title,
       excerpt: '',
-      // excerpt: getNoteExcerpt(note),
     },
   };
   const media = {

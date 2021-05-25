@@ -2,6 +2,7 @@ import { Attachment } from '@/types/note/attachment';
 
 export interface Note {
   title: string;
+  fileName: string;
   creation: number;
   lastModification: number;
   passwordChecked: false;
