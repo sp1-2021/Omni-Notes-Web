@@ -1,8 +1,10 @@
 export interface ListFilesResponse {
   id: string;
-  modifiedTime: string;
+  name: string;
   properties: {
     title: string;
     excerpt: string;
+    trashed: string;
+    archived: string;
   };
 }

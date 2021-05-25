@@ -14,34 +14,41 @@ import {
 import { useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { dispatch } from 'use-bus';
+import { NoteListRecord } from '@/types/note/note-list-record';
+import { useToast } from '@/hooks/utils/useToast';
 
 const noteSkeletons = Array(4)
   .fill(0)
   .map((_, i) => <Note key={i} isLoading />);
 
 export const NoteList: React.FC = () => {
-  const { data: notes, error } = useNoteList();
+  const { data: notes, mutate } = useNoteList();
   const noteManager = useNoteManager();
-  const [isCreating, setCreating] = useState(false);
   const [isDeleting, setDeleting] = useState<Record<string, boolean>>({});
+  const [isArchiving, setArchiving] = useState<Record<string, boolean>>({});
   const [filter, setFilter] = useState<string | null>(null);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const toast = useToast();
+  const sorted = useMemo(() => {
+    return (notes ?? []).sort(
+      (a, b) => parseInt(b.modifiedTime, 10) - parseInt(a.modifiedTime, 10)
+    );
+  }, [notes]);
   const filtered = useMemo(() => {
-    if (!notes || filter === null) {
-      return notes;
+    if (!sorted.length || filter === null) {
+      return sorted;
     }
-    return notes.filter(
+    return sorted.filter(
       (note) => note.title.toLowerCase().indexOf(filter) !== -1
     );
-  }, [filter, notes]);
+  }, [filter, sorted]);
 
-  const onNoteClick = async (id: string) => {
-    const note = await noteManager.fetch(id);
+  const onNoteClick = async (record: NoteListRecord) => {
+    const note = await noteManager.fetch(record);
     dispatch({
       type: NOTE_SELECTED_EVENT,
       note,
+      noteId: record.id,
     });
   };
 
@@ -49,6 +56,31 @@ export const NoteList: React.FC = () => {
     setDeleting({ ...isDeleting, [id]: true });
     await noteManager.remove(id);
     setDeleting({ ...isDeleting, [id]: false });
+  };
+
+  const onArchiveNoteClick = async (id: string) => {
+    setArchiving({ ...isArchiving, [id]: true });
+    await noteManager.archive(id);
+    setArchiving({ ...isArchiving, [id]: false });
+
+    mutate(
+      (notes) =>
+        notes.map((note) =>
+          note.id !== id
+            ? note
+            : {
+                ...note,
+                archived: true,
+              }
+        ),
+      false
+    );
+
+    toast({
+      title: 'Hooray!',
+      description: 'The note has been successfully archived',
+      status: 'success',
+    });
   };
 
   return (
@@ -62,8 +94,6 @@ export const NoteList: React.FC = () => {
             }
           />
           <Button
-            isLoading={isCreating}
-            isDisabled={isCreating}
             leftIcon={<AiOutlinePlus />}
             minWidth="120px"
             onClick={onOpen}
@@ -90,9 +120,12 @@ export const NoteList: React.FC = () => {
                 title={note.title}
                 date={note.modifiedTime}
                 desc={note.excerpt}
+                isArchived={note.archived}
                 isDeleting={isDeleting[note.id]}
-                onClick={() => onNoteClick(note.id)}
+                isArchiving={isArchiving[note.id]}
+                onClick={() => onNoteClick(note)}
                 onDeleteClick={() => onDeleteNoteClick(note.id)}
+                onArchiveClick={() => onArchiveNoteClick(note.id)}
               />
             ))
           ) : (

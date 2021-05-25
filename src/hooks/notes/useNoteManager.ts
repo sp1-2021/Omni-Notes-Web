@@ -3,6 +3,7 @@ import { useNoteList } from '@/hooks/notes/useNoteList';
 import { useToast } from '@/hooks/utils/useToast';
 import { useAxios } from '@/lib/axios/useAxios';
 import { Note } from '@/types/note/note';
+import { NoteListRecord } from '@/types/note/note-list-record';
 
 export const useNoteManager = () => {
   const toast = useToast();
@@ -10,9 +11,9 @@ export const useNoteManager = () => {
   const { revalidate } = useNoteList();
 
   const create = useCallback(
-    async (note: Note) => {
+    async (title: string) => {
       try {
-        await axios.post('notes', note);
+        await axios.post('notes', { title });
         revalidate();
         toast({
           title: 'Hooray!',
@@ -56,10 +57,13 @@ export const useNoteManager = () => {
   );
 
   const fetch = useCallback(
-    async (id: string) => {
+    async (record: NoteListRecord) => {
       try {
-        const response = await axios.get<Note>(`notes/${id}`);
-        return response.data;
+        const response = await axios.get<Note>(`notes/${record.id}`);
+        return {
+          ...response.data,
+          fileName: record.fileName,
+        };
       } catch (error) {
         toast({
           title: 'Whopsss...',
@@ -73,9 +77,47 @@ export const useNoteManager = () => {
     [axios, toast]
   );
 
+  const update = useCallback(
+    async (id: string, current: Note, next: Partial<Note>) => {
+      try {
+        return await axios.put(`notes/${id}`, {
+          note: Object.assign({}, current, next),
+        });
+      } catch (error) {
+        toast({
+          title: 'Whopsss...',
+          status: 'error',
+          description:
+            'An error has occurred while trying to fetch note content. Please try again!',
+        });
+        console.error(error);
+      }
+    },
+    [axios, toast]
+  );
+
+  const archive = useCallback(
+    async (id: string) => {
+      try {
+        return await axios.post(`notes/${id}/archive`);
+      } catch (error) {
+        toast({
+          title: 'Whopsss...',
+          status: 'error',
+          description:
+            'An error has occurred while trying to archive note. Please try again!',
+        });
+        console.error(error);
+      }
+    },
+    [axios, toast]
+  );
+
   return {
     create,
     remove,
     fetch,
+    update,
+    archive,
   };
 };

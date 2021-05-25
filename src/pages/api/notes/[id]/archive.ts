@@ -1,12 +1,10 @@
 import { createRequestHandler } from '@/utils/createRequestHandler';
 import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
+import { Note } from '@/types/note/note';
 
 const handler = createRequestHandler();
 
-/**
- * Handle fetching content of note with given id
- */
-handler.get(async (req, res) => {
+handler.post(async (req, res) => {
   const { id } = req.query;
   const drive = await getGoogleDriveClient(req);
 
@@ -15,25 +13,28 @@ handler.get(async (req, res) => {
       fileId: id as string,
       alt: 'media',
     });
-    const note = response.data;
-    res.json(note);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+    const note = (response.data as any) as Note;
+    const archivedNote: Note = {
+      ...note,
+      archived: true,
+    };
 
-/**
- * Handle deleting note with a given ID
- */
-handler.delete(async (req, res) => {
-  const { id } = req.query;
-  const drive = await getGoogleDriveClient(req);
+    const requestBody = {
+      properties: {
+        archived: 'true',
+      },
+    };
+    const media = {
+      body: JSON.stringify(archivedNote, null, 2),
+    };
 
-  try {
-    await drive.files.delete({
+    await drive.files.update({
+      media,
+      requestBody,
       fileId: id as string,
     });
-    res.json({ success: 'Note has been succesfully deleted' });
+
+    res.json({ success: true });
   } catch (error) {
     res.status(500).json(error);
   }
