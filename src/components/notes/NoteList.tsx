@@ -20,9 +20,8 @@ const noteSkeletons = Array(4)
   .map((_, i) => <Note key={i} isLoading />);
 
 export const NoteList: React.FC = () => {
-  const { data: notes, error } = useNoteList();
+  const { data: notes } = useNoteList();
   const noteManager = useNoteManager();
-  const [isCreating, setCreating] = useState(false);
   const [isDeleting, setDeleting] = useState<Record<string, boolean>>({});
   const [filter, setFilter] = useState<string | null>(null);
 
@@ -62,8 +61,6 @@ export const NoteList: React.FC = () => {
             }
           />
           <Button
-            isLoading={isCreating}
-            isDisabled={isCreating}
             leftIcon={<AiOutlinePlus />}
             minWidth="120px"
             onClick={onOpen}

@@ -1,12 +1,11 @@
 import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
-import { v4 as uuid } from 'uuid';
-import { NOTE_FILE_EXT, NOTE_FILE_MIME_TYPE } from '@/const/drive.const';
+import { NOTE_FILE_MIME_TYPE } from '@/const/drive.const';
 import { getTimestamp } from '@/utils/getTimestamp';
-import { Note } from '@/types/note/note';
 import { ListFilesResponse } from '@/types/list-files-response';
-import { NoteEntry } from '@/types/note/note-entry';
 import { createRequestHandler } from '@/utils/createRequestHandler';
-import { getNoteExcerpt } from '@/utils/note/getNoteExcerpt';
+import { extractModificationTimestampFromFileName } from '@/utils/note/extractModificationTimestampFromFileName';
+import { createNote } from '@/utils/note/createNote';
+import { NoteListRecord } from '@/types/note/note-list-record';
 
 const handler = createRequestHandler();
 
@@ -18,20 +17,24 @@ handler.get(async (req, res) => {
 
   try {
     const files = await drive.files.list({
-      fields: 'files/id,files/properties,files/modifiedTime',
+      q: "mimeType='text/plain' and name contains 'omni_'",
+      fields: 'files/id,files/name,files/properties',
     });
     const fileList = files.data.files as ListFilesResponse[];
-    const notes = fileList.map<NoteEntry>(
-      ({ id, properties, modifiedTime }) => ({
+
+    const notes = fileList
+      .filter((file) => file.properties.trashed !== 'true')
+      .map<NoteListRecord>(({ id, properties, name }) => ({
         id,
         title: properties.title,
         excerpt: properties.excerpt,
-        modifiedTime,
-      })
-    );
+        fileName: name,
+        modifiedTime: extractModificationTimestampFromFileName(name),
+      }));
 
     res.json(notes);
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });
@@ -42,19 +45,20 @@ handler.get(async (req, res) => {
  */
 handler.post(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
-  const note: Note = req.body;
+  const title = (req.body?.title as string) ?? '';
   const timestamp = getTimestamp();
 
   const requestBody = {
-    name: `omni_${uuid()}_${timestamp}.${NOTE_FILE_EXT}`,
+    name: `omni_${timestamp}_${timestamp}`,
     mimeType: NOTE_FILE_MIME_TYPE,
     properties: {
-      title: note.title,
-      excerpt: getNoteExcerpt(note),
+      title,
+      excerpt: '',
+      // excerpt: getNoteExcerpt(note),
     },
   };
   const media = {
-    body: JSON.stringify(note, null, 2),
+    body: JSON.stringify(createNote(title), null, 2),
     mimeType: NOTE_FILE_MIME_TYPE,
   };
 
@@ -67,6 +71,7 @@ handler.post(async (req, res) => {
     const { id } = response.data;
     res.json({ id });
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });

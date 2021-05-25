@@ -9,5 +9,7 @@ import { Note } from '@/types/note/note';
  * and the key "excerpt" takes 7B from that pool, so we return 117 characters.)
  */
 export const getNoteExcerpt = (note: Note) => {
-  return note.content.replace(/\s+/g, ' ').trim().substr(0, 117);
+  return note.content
+    ? note.content.replace(/\s+/g, ' ').trim().substr(0, 117)
+    : '';
 };

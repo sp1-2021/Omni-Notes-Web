@@ -9,6 +9,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { format, fromUnixTime } from 'date-fns';
+import { useMemo } from 'react';
 
 interface NoteProps {
   title?: string;
@@ -29,6 +31,12 @@ export const Note: React.FC<NoteProps> = ({
   onClick,
   onDeleteClick,
 }) => {
+  const formattedDate = useMemo(
+    () =>
+      date ? format(new Date(parseInt(date, 10)), 'dd/MM/yyyy, HH:mm:ss') : '-',
+    [date]
+  );
+
   return (
     <Stack
       cursor="pointer"
@@ -85,7 +93,7 @@ export const Note: React.FC<NoteProps> = ({
           </SkeletonText>
           <Skeleton isLoaded={!isLoading} height={4} width={isLoading && 20}>
             <Text color={useColorModeValue('gray.800', 'gray.500')}>
-              {date}
+              {formattedDate}
             </Text>
           </Skeleton>
         </Stack>

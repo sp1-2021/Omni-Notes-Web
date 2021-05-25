@@ -10,9 +10,9 @@ export const useNoteManager = () => {
   const { revalidate } = useNoteList();
 
   const create = useCallback(
-    async (note: Note) => {
+    async (title: string) => {
       try {
-        await axios.post('notes', note);
+        await axios.post('notes', { title });
         revalidate();
         toast({
           title: 'Hooray!',
@@ -73,9 +73,27 @@ export const useNoteManager = () => {
     [axios, toast]
   );
 
+  const update = useCallback(
+    async (id: string, note: Partial<Note>) => {
+      try {
+        return await axios.put(`notes/${id}`, { note });
+      } catch (error) {
+        toast({
+          title: 'Whopsss...',
+          status: 'error',
+          description:
+            'An error has occurred while trying to fetch note content. Please try again!',
+        });
+        console.error(error);
+      }
+    },
+    [axios, toast]
+  );
+
   return {
     create,
     remove,
     fetch,
+    update,
   };
 };

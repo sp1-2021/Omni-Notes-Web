@@ -11,17 +11,14 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useNoteManager } from '@/hooks/notes/useNoteManager';
-
-const lorem =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor, nulla ultricies hendrerit finibus, massa mi mattis lorem, quis fermentum urna neque vitae elit. Nulla ac consectetur ex. Integer tincidunt lorem augue, vel aliquet tellus sagittis a. Donec sed venenatis nisl. Nullam mattis vulputate mattis. Maecenas tellus dolor, tristique vel pharetra eu, aliquam sed sapien. Nulla pretium auctor nunc, a porttitor mauris ultrices blandit. Maecenas viverra cursus ultrices. Sed sagittis nisi vitae diam fringilla, sit amet faucibus odio commodo. Sed nec semper nisl, eu pharetra massa. Curabitur elementum nisi accumsan arcu ornare vestibulum. Sed a velit imperdiet, bibendum libero nec, feugiat mi. Duis eget maximus velit, eu condimentum purus.';
-const defaultTitle = 'New Rules';
+import { useToast } from '@/hooks/utils/useToast';
 
 interface INoteCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
 export const NoteCreateModal: React.FC<INoteCreateModalProps> = ({
   isOpen,
@@ -29,46 +26,69 @@ export const NoteCreateModal: React.FC<INoteCreateModalProps> = ({
 }) => {
   const noteManager = useNoteManager();
   const [isCreating, setCreating] = useState(false);
-  const [title, setTitle] = useState(defaultTitle);
+  const [title, setTitle] = useState('');
+  const toast = useToast();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const onNewNoteClick = async () => {
-    onClose();
-    setCreating(true);
-    await noteManager.create({
-      title,
-      content: lorem,
-    });
-    setCreating(false);
+  const onSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    try {
+      setCreating(true);
+      await noteManager.create(title);
+      onClose();
+      setTitle('');
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Whopsss...',
+        description: 'An error occurred while creating the note. Try again.',
+        status: 'error',
+      });
+    } finally {
+      setCreating(false);
+    }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    <Modal
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+      size="xl"
+      closeOnEsc={!isCreating}
+      closeOnOverlayClick={!isCreating}
+      initialFocusRef={inputRef}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>New note</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <FormControl isRequired>
+        <ModalBody as="form" onSubmit={onSubmit}>
+          <FormControl>
             <FormLabel>Title</FormLabel>
             <Input
+              ref={inputRef}
               isRequired
-              initialValues={defaultTitle}
-              placeholder={defaultTitle}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </FormControl>
         </ModalBody>
-
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onNewNoteClick}>
+          <Button
+            isDisabled={isCreating}
+            isLoading={isCreating}
+            colorScheme="blue"
+            mr={3}
+          >
             Create
           </Button>
-          <Button variant="ghost" onClick={onClose}>
+          <Button isDisabled={isCreating} variant="ghost" onClick={onClose}>
             Close
           </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
+  );
 };

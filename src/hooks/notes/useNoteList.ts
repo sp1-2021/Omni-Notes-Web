@@ -1,6 +1,6 @@
 import useSWR from 'swr';
-import { NoteEntry } from '@/types/note/note-entry';
+import { NoteListRecord } from '@/types/note/note-list-record';
 
 export const useNoteList = () => {
-  return useSWR<NoteEntry[]>('notes');
+  return useSWR<NoteListRecord[]>('notes');
 };
