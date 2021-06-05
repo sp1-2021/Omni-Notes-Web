@@ -39,9 +39,13 @@ const Home: React.FC = () => {
       return 'Loading your note, please wait...';
     } else if (!note?.content.trim().length) {
       return 'Your note has been loaded, start typing to edit its content';
+    } else if (note?.archived) {
+      return 'This note has been archived and is not editable';
+    } else if (note?.trashed) {
+      return 'This note has been trashed and is note editable';
     }
     return null;
-  }, [isLoading, note?.content, selectedNoteId]);
+  }, [isLoading, note?.archived, note?.content, note?.trashed, selectedNoteId]);
 
   useEffect(() => {
     if (editorRef.current) {
@@ -57,11 +61,20 @@ const Home: React.FC = () => {
       );
       if (editorDiv) {
         editorDiv.contentEditable = JSON.stringify(
-          !isLoading && selectedNoteId !== null
+          !isLoading &&
+            selectedNoteId !== null &&
+            !note.archived &&
+            !note.trashed
         );
       }
     }
-  }, [isEditorInitialized, isLoading, selectedNoteId]);
+  }, [
+    isEditorInitialized,
+    isLoading,
+    note.archived,
+    note.trashed,
+    selectedNoteId,
+  ]);
 
   useEffect(() => {
     if (editorRef.current && selectedNoteId === null) {

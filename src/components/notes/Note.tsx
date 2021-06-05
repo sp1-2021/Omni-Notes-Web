@@ -104,7 +104,7 @@ export const Note: React.FC<NoteProps> = ({
         },
       }}
       onClick={() => {
-        if (!isTrashing) {
+        if (!isPending) {
           onClick?.();
         }
       }}
