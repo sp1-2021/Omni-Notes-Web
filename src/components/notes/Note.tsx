@@ -12,8 +12,10 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { format } from 'date-fns';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FiArchive } from 'react-icons/fi';
+import { FaTrashRestoreAlt } from 'react-icons/fa';
+import { RiDeleteBin2Line, RiInboxUnarchiveLine } from 'react-icons/ri';
 
 interface NoteProps {
   title?: string;
@@ -22,11 +24,13 @@ interface NoteProps {
   isLoading?: boolean;
   isFetching?: boolean;
   isArchived?: boolean;
-  isDeleting?: boolean;
-  isArchiving?: boolean;
+  isTrashed?: boolean;
   onClick?(): void;
-  onDeleteClick?(): void;
+  onTrashClick?(): void;
   onArchiveClick?(): void;
+  onUnarchiveClick?(): void;
+  onRestoreClick?(): void;
+  onDeleteClick?(): void;
 }
 
 export const Note: React.FC<NoteProps> = ({
@@ -36,17 +40,47 @@ export const Note: React.FC<NoteProps> = ({
   isLoading,
   isFetching,
   isArchived,
-  isDeleting,
-  isArchiving,
+  isTrashed,
   onClick,
-  onDeleteClick,
+  onTrashClick,
   onArchiveClick,
+  onUnarchiveClick,
+  onRestoreClick,
+  onDeleteClick,
 }) => {
+  const [isArchiving, setArchiving] = useState(false);
+  const [isUnarchiving, setUnarchiving] = useState(false);
+  const [isTrashing, setTrashing] = useState(false);
+  const [isRestoring, setRestoring] = useState(false);
+  const [isDeleting, setDeleting] = useState(false);
+  const isPending =
+    isLoading ||
+    isFetching ||
+    isTrashing ||
+    isArchiving ||
+    isRestoring ||
+    isDeleting ||
+    isUnarchiving;
   const formattedDate = useMemo(
     () =>
       date ? format(new Date(parseInt(date, 10)), 'dd/MM/yyyy, HH:mm:ss') : '-',
     [date]
   );
+  const color = useMemo(() => {
+    if (isTrashed) return 'red.500';
+    if (isArchived) return 'orange.500';
+    return 'blue.500';
+  }, [isArchived, isTrashed]);
+
+  useEffect(() => {
+    setArchiving(false);
+    setUnarchiving(false);
+  }, [isArchived]);
+
+  useEffect(() => {
+    setTrashing(false);
+    setRestoring(false);
+  }, [isTrashed]);
 
   return (
     <Stack
@@ -70,23 +104,13 @@ export const Note: React.FC<NoteProps> = ({
         },
       }}
       onClick={() => {
-        if (!isDeleting) {
+        if (!isTrashing) {
           onClick?.();
         }
       }}
     >
-      <Circle
-        size="10px"
-        bgColor={
-          isLoading || isFetching || isDeleting
-            ? 'transparent'
-            : isArchived
-            ? 'green.500'
-            : 'red.500'
-        }
-        mt="6px"
-      >
-        {(isFetching || isDeleting) && <Spinner color="red.500" size="xs" />}
+      <Circle size="10px" bgColor={isPending ? 'transparent' : color} mt="6px">
+        {!isLoading && isPending && <Spinner color={color} size="xs" />}
       </Circle>
 
       <HStack
@@ -128,32 +152,88 @@ export const Note: React.FC<NoteProps> = ({
           }}
           transition="all 0.1s ease-in"
         >
-          <Tooltip label="Archive note">
-            <IconButton
-              isLoading={isArchiving}
-              isDisabled={isArchiving || isDeleting}
-              aria-label="Archive note"
-              icon={<FiArchive />}
-              variant="ghost"
-              onClick={(event) => {
-                event.stopPropagation();
-                onArchiveClick?.();
-              }}
-            />
-          </Tooltip>
-          <Tooltip label="Delete note">
-            <IconButton
-              isLoading={isDeleting}
-              isDisabled={isDeleting || isArchiving}
-              aria-label="Delete note"
-              icon={<AiOutlineDelete />}
-              variant="ghost"
-              onClick={(event) => {
-                event.stopPropagation();
-                onDeleteClick?.();
-              }}
-            />
-          </Tooltip>
+          {!isTrashed && !isArchived && (
+            <Tooltip label="Archive note">
+              <IconButton
+                isLoading={isArchiving}
+                isDisabled={isPending}
+                aria-label="Archive note"
+                icon={<FiArchive />}
+                variant="ghost"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onArchiveClick?.();
+                  setArchiving(true);
+                }}
+              />
+            </Tooltip>
+          )}
+          {!isTrashed && isArchived && (
+            <Tooltip label="Unarchive note">
+              <IconButton
+                isLoading={isUnarchiving}
+                isDisabled={isPending}
+                aria-label="Unarchive note"
+                icon={<RiInboxUnarchiveLine />}
+                variant="ghost"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onUnarchiveClick?.();
+                  setUnarchiving(true);
+                }}
+              />
+            </Tooltip>
+          )}
+
+          {!isTrashed && (
+            <Tooltip label="Trash note">
+              <IconButton
+                isLoading={isTrashing}
+                isDisabled={isPending}
+                aria-label="Delete note"
+                icon={<AiOutlineDelete />}
+                variant="ghost"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onTrashClick?.();
+                  setTrashing(true);
+                }}
+              />
+            </Tooltip>
+          )}
+
+          {isTrashed && (
+            <>
+              <Tooltip label="Restore note">
+                <IconButton
+                  isLoading={isRestoring}
+                  isDisabled={isPending}
+                  aria-label="Restore note"
+                  icon={<FaTrashRestoreAlt />}
+                  variant="ghost"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onRestoreClick?.();
+                    setRestoring(true);
+                  }}
+                />
+              </Tooltip>
+              <Tooltip label="Delete note">
+                <IconButton
+                  isLoading={isDeleting}
+                  isDisabled={isPending}
+                  aria-label="Delete note"
+                  icon={<RiDeleteBin2Line />}
+                  variant="ghost"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onDeleteClick?.();
+                    setDeleting(true);
+                  }}
+                />
+              </Tooltip>
+            </>
+          )}
         </HStack>
       </HStack>
     </Stack>

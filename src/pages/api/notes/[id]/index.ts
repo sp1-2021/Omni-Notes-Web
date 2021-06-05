@@ -35,27 +35,8 @@ handler.delete(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
 
   try {
-    const response = await drive.files.get({
+    await drive.files.delete({
       fileId: id as string,
-      alt: 'media',
-    });
-    const note = response.data;
-    const trashedNote = {
-      ...note,
-      lastModification: getTimestamp(),
-      trashed: true,
-    };
-    const media = {
-      body: JSON.stringify(trashedNote, null, 2),
-    };
-    await drive.files.update({
-      fileId: id as string,
-      media,
-      requestBody: {
-        properties: {
-          trashed: 'true',
-        },
-      },
     });
     res.json({ success: 'Note has been succesfully deleted' });
   } catch (error) {
@@ -91,7 +72,7 @@ handler.put(async (req, res) => {
       requestBody,
       fileId: id as string,
     });
-    res.json({ success: 'Note has been succesfully deleted' });
+    res.json({ success: 'Note has been succesfully updated' });
   } catch (error) {
     res.status(500).json(error);
   }

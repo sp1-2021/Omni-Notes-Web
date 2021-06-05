@@ -45,6 +45,7 @@ handler.get(async (req, res) => {
         title: properties.title ?? '',
         excerpt: properties.excerpt ?? '',
         archived: JSON.parse(properties.archived ?? 'false'),
+        trashed: JSON.parse(properties.trashed ?? 'false'),
         fileName: name,
         modifiedTime: extractModificationTimestampFromFileName(name),
       }));
