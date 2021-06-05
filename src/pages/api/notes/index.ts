@@ -14,6 +14,7 @@ const handler = createRequestHandler();
  */
 handler.get(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
+  const filter = req.query.filter;
 
   try {
     const files = await drive.files.list({
@@ -23,7 +24,22 @@ handler.get(async (req, res) => {
     const fileList = files.data.files as ListFilesResponse[];
 
     const notes = fileList
-      .filter((file) => file.properties.trashed !== 'true')
+      .filter((file) => {
+        switch (filter) {
+          case 'archived':
+            return (
+              file.properties.trashed !== 'true' &&
+              file.properties.archived === 'true'
+            );
+          case 'trashed':
+            return file.properties.trashed === 'true';
+          default:
+            return (
+              file.properties.trashed !== 'true' &&
+              file.properties.archived !== 'true'
+            );
+        }
+      })
       .map<NoteListRecord>(({ id, properties, name }) => ({
         id,
         title: properties.title ?? '',
