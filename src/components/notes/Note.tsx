@@ -1,5 +1,6 @@
 import {
   Circle,
+  Spinner,
   HStack,
   IconButton,
   Skeleton,
@@ -19,6 +20,7 @@ interface NoteProps {
   desc?: string;
   date?: string;
   isLoading?: boolean;
+  isFetching?: boolean;
   isArchived?: boolean;
   isDeleting?: boolean;
   isArchiving?: boolean;
@@ -32,6 +34,7 @@ export const Note: React.FC<NoteProps> = ({
   desc,
   date,
   isLoading,
+  isFetching,
   isArchived,
   isDeleting,
   isArchiving,
@@ -73,12 +76,19 @@ export const Note: React.FC<NoteProps> = ({
       }}
     >
       <Circle
-        size={2}
+        size="10px"
         bgColor={
-          isLoading ? 'transparent' : isArchived ? 'green.500' : 'red.500'
+          isLoading || isFetching || isDeleting
+            ? 'transparent'
+            : isArchived
+            ? 'green.500'
+            : 'red.500'
         }
-        mt={2}
-      />
+        mt="6px"
+      >
+        {(isFetching || isDeleting) && <Spinner color="red.500" size="xs" />}
+      </Circle>
+
       <HStack
         role="group"
         flex={1}

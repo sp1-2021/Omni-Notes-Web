@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { getSession, useSession } from 'next-auth/client';
 import { Box, Stack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
@@ -15,15 +15,59 @@ import { useNoteManager } from '@/hooks/notes/useNoteManager';
 import { useNoteList } from '@/hooks/notes/useNoteList';
 import { getNoteExcerpt } from '@/utils/note/getNoteExcerpt';
 import { getTimestamp } from '@/utils/getTimestamp';
+import {
+  selectIsLoading,
+  selectSelectedNoteId,
+  useNoteStore,
+} from '@/hooks/notes/useNoteStore';
 
 const Home: React.FC = () => {
+  const isLoading = useNoteStore(selectIsLoading);
+  const selectedNoteId = useNoteStore(selectSelectedNoteId);
   const [note, setNote] = useState<Note | null>(null);
   const [noteId, setNoteId] = useState<string | null>(null);
   const { t, lang } = useTranslation();
   const [_, loading] = useSession();
   const editorRef = useRef<toastui.Editor | null>(null);
+  const [isEditorInitialized, setEditorInitialized] = useState(false);
   const { update } = useNoteManager();
   const { mutate } = useNoteList();
+  const placeholder = useMemo(() => {
+    if (selectedNoteId === null) {
+      return 'Select a note from the list on the left to start editing';
+    } else if (isLoading) {
+      return 'Loading your note, please wait...';
+    } else if (!note?.content.trim().length) {
+      return 'Your note has been loaded, start typing to edit its content';
+    }
+    return null;
+  }, [isLoading, note?.content, selectedNoteId]);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      // @ts-ignore-next-line
+      editorRef.current.setPlaceholder(placeholder);
+    }
+  }, [placeholder]);
+
+  useEffect(() => {
+    if (isEditorInitialized) {
+      const editorDiv: HTMLDivElement = document.querySelector(
+        '.tui-editor-contents[data-placeholder]'
+      );
+      if (editorDiv) {
+        editorDiv.contentEditable = JSON.stringify(
+          !isLoading && selectedNoteId !== null
+        );
+      }
+    }
+  }, [isEditorInitialized, isLoading, selectedNoteId]);
+
+  useEffect(() => {
+    if (editorRef.current && selectedNoteId === null) {
+      editorRef.current.setMarkdown('');
+    }
+  }, [selectedNoteId]);
 
   useBus(
     NOTE_SELECTED_EVENT,
@@ -84,8 +128,12 @@ const Home: React.FC = () => {
         </Box>
         <Box flex={1}>
           <Editor
+            placeholder={placeholder}
             events={{
-              load: (editor) => (editorRef.current = editor),
+              load: (editor) => {
+                editorRef.current = editor;
+                setEditorInitialized(true);
+              },
               change: onContentChange,
             }}
             initialEditType="wysiwyg"

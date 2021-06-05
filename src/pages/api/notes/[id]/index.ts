@@ -35,8 +35,22 @@ handler.delete(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
 
   try {
+    const response = await drive.files.get({
+      fileId: id as string,
+      alt: 'media',
+    });
+    const note = response.data;
+    const trashedNote = {
+      ...note,
+      lastModification: getTimestamp(),
+      trashed: true,
+    };
+    const media = {
+      body: JSON.stringify(trashedNote, null, 2),
+    };
     await drive.files.update({
       fileId: id as string,
+      media,
       requestBody: {
         properties: {
           trashed: 'true',

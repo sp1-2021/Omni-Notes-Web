@@ -16,6 +16,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { dispatch } from 'use-bus';
 import { NoteListRecord } from '@/types/note/note-list-record';
 import { useToast } from '@/hooks/utils/useToast';
+import { useNoteStore } from '@/hooks/notes/useNoteStore';
 
 const noteSkeletons = Array(4)
   .fill(0)
@@ -23,6 +24,12 @@ const noteSkeletons = Array(4)
 
 export const NoteList: React.FC = () => {
   const { data: notes, mutate } = useNoteList();
+  const {
+    isLoading,
+    setLoading,
+    setSelectedNoteId,
+    selectedNoteId,
+  } = useNoteStore();
   const noteManager = useNoteManager();
   const [isDeleting, setDeleting] = useState<Record<string, boolean>>({});
   const [isArchiving, setArchiving] = useState<Record<string, boolean>>({});
@@ -44,15 +51,21 @@ export const NoteList: React.FC = () => {
   }, [filter, sorted]);
 
   const onNoteClick = async (record: NoteListRecord) => {
+    setSelectedNoteId(record.id);
+    setLoading(true);
     const note = await noteManager.fetch(record);
     dispatch({
       type: NOTE_SELECTED_EVENT,
       note,
       noteId: record.id,
     });
+    setLoading(false);
   };
 
   const onDeleteNoteClick = async (id: string) => {
+    if (selectedNoteId === id) {
+      setSelectedNoteId(null);
+    }
     setDeleting({ ...isDeleting, [id]: true });
     await noteManager.remove(id);
     setDeleting({ ...isDeleting, [id]: false });
@@ -121,6 +134,7 @@ export const NoteList: React.FC = () => {
                 date={note.modifiedTime}
                 desc={note.excerpt}
                 isArchived={note.archived}
+                isFetching={isLoading && selectedNoteId === note.id}
                 isDeleting={isDeleting[note.id]}
                 isArchiving={isArchiving[note.id]}
                 onClick={() => onNoteClick(note)}
