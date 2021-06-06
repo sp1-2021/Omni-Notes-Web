@@ -25,6 +25,11 @@ handler.get(async (req, res) => {
 
     const notes = fileList
       .filter((file) => {
+        // If file has no properties then it was uploaded manually to the drive
+        if (!file.properties) {
+          return true;
+        }
+
         switch (filter) {
           case 'archived':
             return (
@@ -42,10 +47,10 @@ handler.get(async (req, res) => {
       })
       .map<NoteListRecord>(({ id, properties, name }) => ({
         id,
-        title: properties.title ?? '',
-        excerpt: properties.excerpt ?? '',
-        archived: JSON.parse(properties.archived ?? 'false'),
-        trashed: JSON.parse(properties.trashed ?? 'false'),
+        title: properties?.title ?? 'Manually uploaded note',
+        excerpt: properties?.excerpt ?? '',
+        archived: JSON.parse(properties?.archived ?? 'false'),
+        trashed: JSON.parse(properties?.trashed ?? 'false'),
         fileName: name,
         modifiedTime: extractModificationTimestampFromFileName(name),
       }));
