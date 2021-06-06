@@ -64,7 +64,7 @@ export const NoteCreateModal: React.FC<INoteCreateModalProps> = ({
       <ModalContent>
         <ModalHeader>New note</ModalHeader>
         <ModalCloseButton />
-        <ModalBody as="form" onSubmit={onSubmit}>
+        <ModalBody id="noteCreateForm" as="form" onSubmit={onSubmit}>
           <FormControl>
             <FormLabel>Title</FormLabel>
             <Input
@@ -85,6 +85,8 @@ export const NoteCreateModal: React.FC<INoteCreateModalProps> = ({
             Cancel
           </Button>
           <Button
+            form="noteCreateForm"
+            type="submit"
             isDisabled={isCreating}
             isLoading={isCreating}
             colorScheme="blue"
