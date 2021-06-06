@@ -4,15 +4,10 @@ const { compilerOptions } = require('../tsconfig.json');
 const paths = compilerOptions.paths ? compilerOptions.paths : {};
 
 module.exports = {
+  preset: 'jest-playwright-preset',
   rootDir: '../',
   setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
-  testPathIgnorePatterns: [
-    '<rootDir>/e2e',
-    '<rootDir>/.next/',
-    '<rootDir>/node_modules/',
-    '<rootDir>/cypress/',
-    '<rootDir>/webdriverio/',
-  ],
+  testMatch: ['<rootDir>/e2e/**/*.e2e.*'],
   moduleNameMapper: {
     ...pathsToModuleNameMapper(paths, { prefix: '<rootDir>/' }),
     '\\.(scss|sass|css)$': 'identity-obj-proxy',
