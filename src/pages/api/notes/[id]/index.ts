@@ -30,14 +30,12 @@ handler.get(async (req, res) => {
         (fileName) => `name = '${fileName}'`
       );
       const query = queries.join(' or ').trim();
-      console.log({ query });
-
       const attachmentsResponse = await drive.files.list({
         q: query,
-        fields: 'files/webContentLink',
+        fields: 'files/webViewLink',
       });
       attachmentUrls = attachmentsResponse.data.files.map(
-        (file) => file.webContentLink
+        (file) => file.webViewLink
       );
     }
 

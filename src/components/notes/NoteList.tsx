@@ -62,10 +62,11 @@ export const NoteList: React.FC = () => {
   const onNoteClick = async (record: NoteListRecord) => {
     setSelectedNoteId(record.id);
     setLoading(true);
-    const note = await noteManager.fetch(record);
+    const { note, attachmentUrls } = await noteManager.fetch(record);
     dispatch({
       type: NOTE_SELECTED_EVENT,
       note,
+      attachmentUrls,
       noteId: record.id,
     });
     setLoading(false);

@@ -103,15 +103,23 @@ export const useNoteManager = () => {
   );
 
   const fetch = useCallback(
-    async (record: NoteListRecord) => {
+    async (
+      record: NoteListRecord
+    ): Promise<{
+      note: Note & { fileName: string };
+      attachmentUrls: string[];
+    }> => {
       try {
         const response = await axios.get<{
           note: Note;
           attachmentUrls: string[];
         }>(`notes/${record.id}`);
         return {
-          ...response.data.note,
-          fileName: record.fileName,
+          note: {
+            ...response.data.note,
+            fileName: record.fileName,
+          },
+          attachmentUrls: response.data.attachmentUrls,
         };
       } catch (error) {
         toast({
