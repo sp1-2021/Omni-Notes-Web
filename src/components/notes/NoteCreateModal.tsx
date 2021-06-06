@@ -78,14 +78,18 @@ export const NoteCreateModal: React.FC<INoteCreateModalProps> = ({
         <ModalFooter>
           <Button
             isDisabled={isCreating}
+            variant="ghost"
+            mr={3}
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            isDisabled={isCreating}
             isLoading={isCreating}
             colorScheme="blue"
-            mr={3}
           >
             Create
-          </Button>
-          <Button isDisabled={isCreating} variant="ghost" onClick={onClose}>
-            Close
           </Button>
         </ModalFooter>
       </ModalContent>

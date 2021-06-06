@@ -10,6 +10,8 @@ import {
   Stack,
   Text,
   useDisclosure,
+  IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -17,6 +19,7 @@ import { dispatch } from 'use-bus';
 import { NoteListRecord } from '@/types/note/note-list-record';
 import { useToast } from '@/hooks/utils/useToast';
 import { NoteListFilter, useNoteStore } from '@/hooks/notes/useNoteStore';
+import { BiRefresh } from 'react-icons/bi';
 
 const noteSkeletons = Array(4)
   .fill(0)
@@ -29,6 +32,7 @@ const emptyMessages = {
 };
 
 export const NoteList: React.FC = () => {
+  const [isRefreshing, setRefreshing] = useState(false);
   const { data: notes, mutate } = useNoteList();
   const {
     isLoading,
@@ -65,6 +69,12 @@ export const NoteList: React.FC = () => {
       noteId: record.id,
     });
     setLoading(false);
+  };
+
+  const onRefreshClick = async () => {
+    setRefreshing(true);
+    await mutate();
+    setRefreshing(false);
   };
 
   const onTrashClick = async (id: string) => {
@@ -116,13 +126,22 @@ export const NoteList: React.FC = () => {
               setFilter(event.target.value.length ? event.target.value : null)
             }
           />
-          <Button
-            leftIcon={<AiOutlinePlus />}
-            minWidth="120px"
-            onClick={onOpen}
-          >
-            New note
-          </Button>
+          <Tooltip label="Refresh note list">
+            <IconButton
+              isDisabled={isRefreshing}
+              isLoading={isRefreshing}
+              aria-label="Refresh note list"
+              icon={<BiRefresh />}
+              onClick={onRefreshClick}
+            />
+          </Tooltip>
+          <Tooltip label="New note">
+            <IconButton
+              aria-label="Create new note"
+              icon={<AiOutlinePlus />}
+              onClick={onOpen}
+            />
+          </Tooltip>
         </HStack>
         <Stack
           spacing={4}
