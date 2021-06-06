@@ -2,6 +2,9 @@ import { createRequestHandler } from '@/utils/createRequestHandler';
 import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
 import { Note } from '@/types/note/note';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { fetchNoteFileName } from '@/utils/note/fetchNoteFileName';
+import { getTimestamp } from '@/utils/getTimestamp';
+import { generateUpdatedNoteFileName } from '@/utils/note/generateUpdatedNoteFileName';
 
 const handler = createRequestHandler();
 
@@ -18,13 +21,19 @@ const updateArchivedProperty = async (
       fileId: id as string,
       alt: 'media',
     });
+
+    const fileName = await fetchNoteFileName(drive, id as string);
+    const timestamp = getTimestamp();
+
     const note = (response.data as any) as Note;
     const archivedNote: Note = {
       ...note,
+      lastModification: timestamp,
       archived: isArchived,
     };
 
     const requestBody = {
+      name: generateUpdatedNoteFileName(fileName, timestamp),
       properties: {
         archived: JSON.stringify(isArchived),
       },
@@ -41,6 +50,7 @@ const updateArchivedProperty = async (
 
     res.json({ success: true });
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 };
@@ -56,7 +66,7 @@ handler.post(async (req, res) => {
  * Handle unarchiving note with given id
  */
 handler.delete(async (req, res) => {
-  updateArchivedProperty(req, res, false);
+  return updateArchivedProperty(req, res, false);
 });
 
 export default handler;

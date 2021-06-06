@@ -63,16 +63,16 @@ const Home: React.FC = () => {
         editorDiv.contentEditable = JSON.stringify(
           !isLoading &&
             selectedNoteId !== null &&
-            !note.archived &&
-            !note.trashed
+            !note?.archived &&
+            !note?.trashed
         );
       }
     }
   }, [
     isEditorInitialized,
     isLoading,
-    note.archived,
-    note.trashed,
+    note?.archived,
+    note?.trashed,
     selectedNoteId,
   ]);
 
@@ -98,8 +98,10 @@ const Home: React.FC = () => {
   );
 
   const onContentChange = () => {
-    updateContent();
-    updateNoteListRecord();
+    if (selectedNoteId !== null) {
+      updateContent();
+      updateNoteListRecord();
+    }
   };
 
   const updateNoteListRecord = useDebouncedCallback(() => {
@@ -147,8 +149,8 @@ const Home: React.FC = () => {
                 editorRef.current = editor;
                 setEditorInitialized(true);
               },
-              change: onContentChange,
             }}
+            onChange={onContentChange}
             initialEditType="wysiwyg"
             height="100%"
           />

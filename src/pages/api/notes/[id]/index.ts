@@ -3,7 +3,6 @@ import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
 import { Note } from '@/types/note/note';
 import { getTimestamp } from '@/utils/getTimestamp';
 import { generateUpdatedNoteFileName } from '@/utils/note/generateUpdatedNoteFileName';
-import { NOTE_FILE_MIME_TYPE } from '@/const/drive.const';
 import { getNoteExcerpt } from '@/utils/note/getNoteExcerpt';
 
 const handler = createRequestHandler();
@@ -49,14 +48,15 @@ handler.delete(async (req, res) => {
  */
 handler.put(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
+  const timestamp = getTimestamp();
   const { id } = req.query;
   const { fileName, ...note }: Note = {
     ...req.body.note,
-    lastModification: getTimestamp(),
+    lastModification: timestamp,
   };
 
   const requestBody = {
-    name: generateUpdatedNoteFileName(fileName),
+    name: generateUpdatedNoteFileName(fileName, timestamp),
     properties: {
       title: note.title,
       excerpt: getNoteExcerpt(note.content),

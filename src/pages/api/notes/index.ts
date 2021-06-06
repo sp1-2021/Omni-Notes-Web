@@ -75,7 +75,7 @@ handler.post(async (req, res) => {
     },
   };
   const media = {
-    body: JSON.stringify(createNote(title), null, 2),
+    body: JSON.stringify(createNote(title, timestamp), null, 2),
     mimeType: NOTE_FILE_MIME_TYPE,
   };
 
