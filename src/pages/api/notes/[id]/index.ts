@@ -19,9 +19,34 @@ handler.get(async (req, res) => {
       fileId: id as string,
       alt: 'media',
     });
-    const note = response.data;
-    res.json(note);
+    let attachmentUrls = [];
+    const note = response.data as Note;
+
+    if (note.attachmentsList.length) {
+      const attachmentFileNames = note.attachmentsList.map(
+        (attachment) => attachment.uriPath
+      );
+      const queries = attachmentFileNames.map(
+        (fileName) => `name = '${fileName}'`
+      );
+      const query = queries.join(' or ').trim();
+      console.log({ query });
+
+      const attachmentsResponse = await drive.files.list({
+        q: query,
+        fields: 'files/webContentLink',
+      });
+      attachmentUrls = attachmentsResponse.data.files.map(
+        (file) => file.webContentLink
+      );
+    }
+
+    res.json({
+      note,
+      attachmentUrls,
+    });
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });
