@@ -4,5 +4,6 @@ export interface NoteListRecord {
   fileName: string;
   excerpt: string;
   archived: boolean;
+  trashed: boolean;
   modifiedTime: string;
 }

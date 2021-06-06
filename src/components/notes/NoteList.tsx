@@ -10,22 +10,38 @@ import {
   Stack,
   Text,
   useDisclosure,
+  IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { dispatch } from 'use-bus';
 import { NoteListRecord } from '@/types/note/note-list-record';
 import { useToast } from '@/hooks/utils/useToast';
+import { NoteListFilter, useNoteStore } from '@/hooks/notes/useNoteStore';
+import { BiRefresh } from 'react-icons/bi';
 
 const noteSkeletons = Array(4)
   .fill(0)
   .map((_, i) => <Note key={i} isLoading />);
 
+const emptyMessages = {
+  [NoteListFilter.DEFAULT]: 'You have not added any notes yet',
+  [NoteListFilter.ARCHIVED]: 'You have not archived any notes',
+  [NoteListFilter.TRASHED]: 'The trashbin is empty',
+};
+
 export const NoteList: React.FC = () => {
+  const [isRefreshing, setRefreshing] = useState(false);
   const { data: notes, mutate } = useNoteList();
+  const {
+    isLoading,
+    setLoading,
+    filter: noteListFilter,
+    setSelectedNoteId,
+    selectedNoteId,
+  } = useNoteStore();
   const noteManager = useNoteManager();
-  const [isDeleting, setDeleting] = useState<Record<string, boolean>>({});
-  const [isArchiving, setArchiving] = useState<Record<string, boolean>>({});
   const [filter, setFilter] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
@@ -44,38 +60,56 @@ export const NoteList: React.FC = () => {
   }, [filter, sorted]);
 
   const onNoteClick = async (record: NoteListRecord) => {
-    const note = await noteManager.fetch(record);
+    setSelectedNoteId(record.id);
+    setLoading(true);
+    const { note, attachmentUrls } = await noteManager.fetch(record);
     dispatch({
       type: NOTE_SELECTED_EVENT,
       note,
+      attachmentUrls,
       noteId: record.id,
     });
+    setLoading(false);
   };
 
-  const onDeleteNoteClick = async (id: string) => {
-    setDeleting({ ...isDeleting, [id]: true });
+  const onRefreshClick = async () => {
+    setRefreshing(true);
+    await mutate();
+    setRefreshing(false);
+  };
+
+  const onTrashClick = async (id: string) => {
+    if (selectedNoteId === id) {
+      setSelectedNoteId(null);
+    }
+    await noteManager.trash(id);
+    await mutate();
+  };
+
+  const onRestoreClick = async (id: string) => {
+    await noteManager.restore(id);
+    await mutate();
+  };
+
+  const onUnarchiveClick = async (id: string) => {
+    await noteManager.unarchive(id);
+    await mutate();
+  };
+
+  const onDeleteClick = async (id: string) => {
+    if (selectedNoteId === id) {
+      setSelectedNoteId(null);
+    }
     await noteManager.remove(id);
-    setDeleting({ ...isDeleting, [id]: false });
+    await mutate();
   };
 
   const onArchiveNoteClick = async (id: string) => {
-    setArchiving({ ...isArchiving, [id]: true });
+    if (selectedNoteId === id) {
+      setSelectedNoteId(null);
+    }
     await noteManager.archive(id);
-    setArchiving({ ...isArchiving, [id]: false });
-
-    mutate(
-      (notes) =>
-        notes.map((note) =>
-          note.id !== id
-            ? note
-            : {
-                ...note,
-                archived: true,
-              }
-        ),
-      false
-    );
-
+    await mutate();
     toast({
       title: 'Hooray!',
       description: 'The note has been successfully archived',
@@ -93,13 +127,22 @@ export const NoteList: React.FC = () => {
               setFilter(event.target.value.length ? event.target.value : null)
             }
           />
-          <Button
-            leftIcon={<AiOutlinePlus />}
-            minWidth="120px"
-            onClick={onOpen}
-          >
-            New note
-          </Button>
+          <Tooltip label="Refresh note list">
+            <IconButton
+              isDisabled={isRefreshing}
+              isLoading={isRefreshing}
+              aria-label="Refresh note list"
+              icon={<BiRefresh />}
+              onClick={onRefreshClick}
+            />
+          </Tooltip>
+          <Tooltip label="New note">
+            <IconButton
+              aria-label="Create new note"
+              icon={<AiOutlinePlus />}
+              onClick={onOpen}
+            />
+          </Tooltip>
         </HStack>
         <Stack
           spacing={4}
@@ -120,17 +163,20 @@ export const NoteList: React.FC = () => {
                 title={note.title}
                 date={note.modifiedTime}
                 desc={note.excerpt}
+                isTrashed={note.trashed}
                 isArchived={note.archived}
-                isDeleting={isDeleting[note.id]}
-                isArchiving={isArchiving[note.id]}
+                isFetching={isLoading && selectedNoteId === note.id}
                 onClick={() => onNoteClick(note)}
-                onDeleteClick={() => onDeleteNoteClick(note.id)}
+                onTrashClick={() => onTrashClick(note.id)}
                 onArchiveClick={() => onArchiveNoteClick(note.id)}
+                onDeleteClick={() => onDeleteClick(note.id)}
+                onRestoreClick={() => onRestoreClick(note.id)}
+                onUnarchiveClick={() => onUnarchiveClick(note.id)}
               />
             ))
           ) : (
             <Text textAlign="center" color="rgba(255, 255, 255, 0.5)">
-              You don't have any notes yet
+              {emptyMessages[noteListFilter]}
             </Text>
           )}
         </Stack>

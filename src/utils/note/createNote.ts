@@ -1,9 +1,10 @@
 import { getTimestamp } from '@/utils/getTimestamp';
 import { Note } from '@/types/note/note';
 
-export const createNote = (title: string): Omit<Note, 'fileName'> => {
-  const timestamp = getTimestamp();
-
+export const createNote = (
+  title: string,
+  timestamp: number
+): Omit<Note, 'fileName'> => {
   return {
     title: title ?? '',
     creation: timestamp,

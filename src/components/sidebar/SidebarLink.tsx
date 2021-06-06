@@ -3,18 +3,20 @@ import { Icon } from '@chakra-ui/icons';
 
 interface SidebarLinkProps {
   icon: As;
+  isActive?: boolean;
   onClick?();
 }
 
 export const SidebarLink: React.FC<SidebarLinkProps> = ({
   icon,
+  isActive,
   onClick,
   children,
 }) => {
   return (
     <HStack
       cursor="pointer"
-      color="rgba(255, 255, 255, 0.7)"
+      color={!isActive ? 'rgba(255, 255, 255, 0.7)' : 'white'}
       _hover={{ color: 'white' }}
       transition="all 0.1s ease-in"
       onClick={onClick}

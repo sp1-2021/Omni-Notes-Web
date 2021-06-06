@@ -3,7 +3,6 @@ import { getGoogleDriveClient } from '@/utils/google/getGoogleDriveClient';
 import { Note } from '@/types/note/note';
 import { getTimestamp } from '@/utils/getTimestamp';
 import { generateUpdatedNoteFileName } from '@/utils/note/generateUpdatedNoteFileName';
-import { NOTE_FILE_MIME_TYPE } from '@/const/drive.const';
 import { getNoteExcerpt } from '@/utils/note/getNoteExcerpt';
 
 const handler = createRequestHandler();
@@ -20,9 +19,32 @@ handler.get(async (req, res) => {
       fileId: id as string,
       alt: 'media',
     });
-    const note = response.data;
-    res.json(note);
+    let attachmentUrls = [];
+    const note = response.data as Note;
+
+    if (note.attachmentsList.length) {
+      const attachmentFileNames = note.attachmentsList.map(
+        (attachment) => attachment.uriPath
+      );
+      const queries = attachmentFileNames.map(
+        (fileName) => `name = '${fileName}'`
+      );
+      const query = queries.join(' or ').trim();
+      const attachmentsResponse = await drive.files.list({
+        q: query,
+        fields: 'files/webViewLink',
+      });
+      attachmentUrls = attachmentsResponse.data.files.map(
+        (file) => file.webViewLink
+      );
+    }
+
+    res.json({
+      note,
+      attachmentUrls,
+    });
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });
@@ -35,13 +57,8 @@ handler.delete(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
 
   try {
-    await drive.files.update({
+    await drive.files.delete({
       fileId: id as string,
-      requestBody: {
-        properties: {
-          trashed: 'true',
-        },
-      },
     });
     res.json({ success: 'Note has been succesfully deleted' });
   } catch (error) {
@@ -54,14 +71,15 @@ handler.delete(async (req, res) => {
  */
 handler.put(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
+  const timestamp = getTimestamp();
   const { id } = req.query;
   const { fileName, ...note }: Note = {
     ...req.body.note,
-    lastModification: getTimestamp(),
+    lastModification: timestamp,
   };
 
   const requestBody = {
-    name: generateUpdatedNoteFileName(fileName),
+    name: generateUpdatedNoteFileName(fileName, timestamp),
     properties: {
       title: note.title,
       excerpt: getNoteExcerpt(note.content),
@@ -77,7 +95,7 @@ handler.put(async (req, res) => {
       requestBody,
       fileId: id as string,
     });
-    res.json({ success: 'Note has been succesfully deleted' });
+    res.json({ success: 'Note has been succesfully updated' });
   } catch (error) {
     res.status(500).json(error);
   }

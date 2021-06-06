@@ -14,6 +14,7 @@ const handler = createRequestHandler();
  */
 handler.get(async (req, res) => {
   const drive = await getGoogleDriveClient(req);
+  const filter = req.query.filter;
 
   try {
     const files = await drive.files.list({
@@ -23,12 +24,33 @@ handler.get(async (req, res) => {
     const fileList = files.data.files as ListFilesResponse[];
 
     const notes = fileList
-      .filter((file) => file.properties.trashed !== 'true')
+      .filter((file) => {
+        // If file has no properties then it was uploaded manually to the drive
+        if (!file.properties) {
+          return true;
+        }
+
+        switch (filter) {
+          case 'archived':
+            return (
+              file.properties.trashed !== 'true' &&
+              file.properties.archived === 'true'
+            );
+          case 'trashed':
+            return file.properties.trashed === 'true';
+          default:
+            return (
+              file.properties.trashed !== 'true' &&
+              file.properties.archived !== 'true'
+            );
+        }
+      })
       .map<NoteListRecord>(({ id, properties, name }) => ({
         id,
-        title: properties.title ?? '',
-        excerpt: properties.excerpt ?? '',
-        archived: JSON.parse(properties.archived ?? 'false'),
+        title: properties?.title ?? 'Manually uploaded note',
+        excerpt: properties?.excerpt ?? '',
+        archived: JSON.parse(properties?.archived ?? 'false'),
+        trashed: JSON.parse(properties?.trashed ?? 'false'),
         fileName: name,
         modifiedTime: extractModificationTimestampFromFileName(name),
       }));
@@ -58,7 +80,7 @@ handler.post(async (req, res) => {
     },
   };
   const media = {
-    body: JSON.stringify(createNote(title), null, 2),
+    body: JSON.stringify(createNote(title, timestamp), null, 2),
     mimeType: NOTE_FILE_MIME_TYPE,
   };
 

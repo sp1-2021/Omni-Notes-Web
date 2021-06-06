@@ -13,6 +13,7 @@ export default NextAuth({
         'https://www.googleapis.com/auth/drive.appdata',
         'https://www.googleapis.com/auth/drive.file',
         'https://www.googleapis.com/auth/drive.install',
+        'https://www.googleapis.com/auth/drive',
       ].join(' '),
     }),
     // ...add more providers here

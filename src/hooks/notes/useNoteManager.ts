@@ -56,13 +56,70 @@ export const useNoteManager = () => {
     [axios, revalidate, toast]
   );
 
-  const fetch = useCallback(
-    async (record: NoteListRecord) => {
+  const trash = useCallback(
+    async (id: string) => {
       try {
-        const response = await axios.get<Note>(`notes/${record.id}`);
+        await axios.post(`notes/${id}/trash`);
+        revalidate();
+        toast({
+          title: 'Hooray!',
+          status: 'success',
+          description: 'Selected note has been successfuly marked as trashed',
+        });
+      } catch (error) {
+        toast({
+          title: 'Whopsss...',
+          status: 'error',
+          description:
+            'An error has occured while trashing selected note. Please try again!',
+        });
+        console.error(error);
+      }
+    },
+    [axios, revalidate, toast]
+  );
+
+  const restore = useCallback(
+    async (id: string) => {
+      try {
+        await axios.delete(`notes/${id}/trash`);
+        revalidate();
+        toast({
+          title: 'Hooray!',
+          status: 'success',
+          description: 'Selected note has been successfuly restored',
+        });
+      } catch (error) {
+        toast({
+          title: 'Whopsss...',
+          status: 'error',
+          description:
+            'An error has occured while restoring selected note. Please try again!',
+        });
+        console.error(error);
+      }
+    },
+    [axios, revalidate, toast]
+  );
+
+  const fetch = useCallback(
+    async (
+      record: NoteListRecord
+    ): Promise<{
+      note: Note & { fileName: string };
+      attachmentUrls: string[];
+    }> => {
+      try {
+        const response = await axios.get<{
+          note: Note;
+          attachmentUrls: string[];
+        }>(`notes/${record.id}`);
         return {
-          ...response.data,
-          fileName: record.fileName,
+          note: {
+            ...response.data.note,
+            fileName: record.fileName,
+          },
+          attachmentUrls: response.data.attachmentUrls,
         };
       } catch (error) {
         toast({
@@ -113,11 +170,31 @@ export const useNoteManager = () => {
     [axios, toast]
   );
 
+  const unarchive = useCallback(
+    async (id: string) => {
+      try {
+        return await axios.delete(`notes/${id}/archive`);
+      } catch (error) {
+        toast({
+          title: 'Whopsss...',
+          status: 'error',
+          description:
+            'An error has occurred while trying to archive note. Please try again!',
+        });
+        console.error(error);
+      }
+    },
+    [axios, toast]
+  );
+
   return {
     create,
     remove,
+    trash,
+    restore,
     fetch,
     update,
     archive,
+    unarchive,
   };
 };
