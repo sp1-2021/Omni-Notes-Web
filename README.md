@@ -1,53 +1,138 @@
-## Omni Notes Web Editor
+# Omni Notes Web Editor
+Poniższa aplikacja nie zawiera w sobie informacji o wersji mobilnej aplikacji. Dokumentacja dla wersji mobilnej znajduje się w [tym repozytorium](https://github.com/sp1-2021/Omni-Notes).
+
 
 Naszym zadaniem w ramach przedmiotu Studio Projektowe jest dodanie do open-source'owej aplikacji Omni-Notes możliwość synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglądarkę internetową.
 
-Wszystkie przyjęte przez nas cele zostały osiągnięte w planowanym czasie i przy planowanych zasobach.
 
-Poniższa dokumentacja dotyczy tylko aplikacji webowej - dokumentacja do aplikacji mobilnej znajduje się w [tym repozytorium](https://github.com/sp1-2021/Omni-Notes).
-
-* [O aplikacji](#o-aplikacji)
-* [Instrukcja uzytkownika](#instrukcja-uzytkownika)
-* [Wybrana metodyka](#wybrana-metodyka)
-* [Licencja](#licencja)
-* [Cele](#cele)
-* [Specyfikacja funkcjonalna projektu](#specyfikacja-funkcjonalna-projektu)
-* [Analiza ryzyka](#analiza-ryzyka)
-* [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
-* [Instrukcja instalacji i uruchomienia aplikacji](#instrukcja-instalacji-i-uruchomienia-aplikacji)
-* [Instrukcja wdrożenia aplikacji](#instrukcja-wdrożenia-aplikacji)
+1. [O aplikacji](#o-aplikacji)
+2. [Instrukcja instalacji i uruchomienia aplikacji](#instrukcja-instalacji-i-uruchomienia-aplikacji)
+3. [Instrukcja wdrożenia aplikacji](#instrukcja-wdrożenia-aplikacji)
+4. [Instrukcja uzytkownika](#instrukcja-uzytkownika)
+5. [Informacje o projekcie](#informacje-o-projekcie)
+   - [Cele](#cele)
+   - [Specyfikacja funkcjonalna projektu](#specyfikacja-funkcjonalna-projektu)
+   - [Analiza ryzyka](#analiza-ryzyka)
+   - [Wybrana metodyka](#wybrana-metodyka)
+   - [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
+6. [Licencja](#licencja)
 
 
-### O aplikacji
+
+## O aplikacji
 
 **Omni Notes Web Editor** - edytor webowy do zarządzania notatkami, zapewniający schludny interfejs oraz prostotę działania. Edytor zapewnia synchronizację z aplikacją mobilną **Omni Notes** poprzez Twój Dysk Google - dzięki czemu użytkownik może korzystać jednocześnie z aplikacji internetowej oraz mobilnej wersji na smartfonie.
 
 Oryginalne repozytorium z aplikacją mobilną znajduje się [tutaj](https://github.com/federicoiosue/Omni-Notes).
 
-### Instrukcja uzytkownika
+## Instrukcja instalacji i uruchomienia aplikacji
+
+### Instalacja
+
+Aplikacja do poprawnego działania wymaga zainstalowanego środowiska [Node](https://nodejs.org/en/) w wersji 10.13 lub
+późniejszej.
+
+1. Należy zclonować repozytorium projektu
+
+```bash
+git clone https://github.com/sp1-2021/Omni-Notes-Web
+```
+
+2. Następnie w zależności od używanego package managera dla Node, należy zainstalować moduły. Przy tworzeniu projektu
+   wykorzystany był `yarn` i taki package manager jest też rekomendowany
+
+```bash
+yarn install
+```
+
+3. Po zainstalowaniu modułów należy przejść do konfiguracji aplikacji
+
+### Konfiguracja
+
+Konfiguracja aplikacji odczytywana jest ze zmiennych środowiskowych. Bazowa konfiguracja znajduje się w pliku `.env`. W
+lokalnym środowisku należy utworzyć plik `.env.local`, który nie będzie częścią publicznie dostępnego repozytorium, a
+następnie przekopiować do niego bazową konfigurację z pliku `.env`, i uzupełnić pola według poniższych instrukcji. W
+przypadku deploymentu produkcyjnego, można wykorzystać plik `.env.production.local` lub bezpośrednio ustawić zmienne
+środowiskowe w systemie
+
+#### Uwierzytelnianie
+
+Aplikacja do poprawnego działania wymaga skonfigurowania uwierzytelnienia OAuth za pomocą Google. W tym celu należy
+utworzyć poświadczenia dla projektu (opis procesu znajdziemy
+w [dokumentacji Google](https://developers.google.com/identity/sign-in/web/sign-in#create_authorization_credentials),
+sekcja "Utwórz dane uwierzytelniające"). Jeżeli
+wcześniej [utworzono już te dane dla aplikacji mobilnej](https://github.com/sp1-2021/Omni-Notes#przygotowanie-%C5%9Brodowiska-przed-uruchomieniem-projektu)
+to należy z nich skorzystać, zamiast generować nowe poświadczenie. Po utworzeniu poświadczeń należy utworzyć
+plik `.env.local`, o następującej zawartości:
+
+```bash
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+Uzupełniając klucze `GOOGLE_CLIENT_ID` oraz `GOOGLE_CLIENT_SECRET` wartościami uzyskanymi od Google.
+
+#### Dostęp do Google Drive
+
+Domyślnie aplikacja działa na
+ograniczonym [scope dostępu do Google Drive](https://developers.google.com/drive/api/v2/about-auth), przez co może
+odczytywać jedynie pliki, które sama utworzyła. W celu umożliwienia aplikacji odczytywania plików zuploadowanych
+bezpośrednio przez użytkownika, konieczne jest skorzystanie z szerszego dostępu. Aby to zrobić należy w utworzonym
+wcześniej plik `.env.local` dodać linijkę:
+
+```bash
+GOOGLE_DRIVE_FULL_ACCESS_SCOPE_ENABLED=true
+```
+
+### Uruchomienie środowiska developerskiego
+
+Aby uruchomić środowisko należy użyć polecenia
+
+```bash
+yarn dev
+```
+
+Aplikacja domyślnie jest dostępna pod adresem `http://localhost:3000`
+
+## Instrukcja wdrożenia aplikacji
+
+W celu utworzenia buildu produkcyjnego należy posłużyć się poleceniem
+
+```bash
+yarn build
+```
+
+Po zakończeniu buildu, aplikację można uruchomić za pomocą polecenia
+
+```bash
+yarn start
+```
+
+Szczegółowe informacje o deploymencie aplikacji opartych o Next.js znajdziemy w
+sekcji [Deployment w dokumentacji](https://nextjs.org/docs/deployment) na oficjalnej stronie framework'u.
+
+
+
+## Instrukcja uzytkownika
 
 Instrukcja użytkownika wraz z opisem interfejsu aplikacji znajduje się [tutaj](https://stonly.com/guide/en/omni-notes-web-ILlUY6MAWJ/Steps/443574).
 
 
-### Wybrana metodyka
-
-Do zarządzania projektem wybraliśmy metodykę Scrum. Wybraliśmy ją ze względu na to, że pozwali nam na regularne i iteracyjne sprawdzanie naszych postępów, co może się okazać kluczowe szczególnie w przypadku części projektu związanej z aplikacją mobilną - ze względu na nasz brak doświadczenia z platformą Android nie jesteśmy w stanie dokładnie oszacować czasu, który będzie potrzebny do zrealizowania poszczególnych zadań. Z każdym kolejnym sprintem będziemy wiedzieli na co poświęcić więcej czasu, którym zadaniom nadać większy priorytet i ile dane zadanie może realnie zająć czasu.
-
-
-Podsumowując: 
+Podsumowując:
 * Stosujemy metodykę Scrum z 2 tygodniowymi sprintami
 * Na początku każdego sprintu zespół spotka się i wybierze nowe zadania z backlogu do realizacji
 * Tablica sprintu będzie dostępna na platformie [GitHub](https://github.com/orgs/sp1-2021/projects)
 * Po zakończeniu sprintu zespół podsumuje swoje prace i przedstawi ich wynik prowadzącemu
 
-### Licencja
-GPL-3.0 License
+## Informacje o projekcie
 
 ### Cele
 
 Głównym celem aplikacji było stworzenie edytora internetowego, który będzie w stanie synchronizować się z dyskiem Google, co umożliwiało edycję i tworzenie notatek zarówno w aplikacji internetowej, jak i aplikacji mobilnej, która została specjalnie.
 
 ### Specyfikacja funkcjonalna projektu
+Wszystkie przyjęte przez nas cele zostały osiągnięte w planowanym czasie i przy planowanych zasobach.
+
 #### 1. Nowe funkcjonalności aplikacji mobilnej
 ##### 1.1 Uwierzytelnianie poprzez konto Google
 Użytkownik w trakcie użytkowania aplikacji może włączyć możliwość synchronizacji wybranych notatek z chmurą. Wymaga to zalogowania się do konta google.
@@ -78,7 +163,6 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 * Tagowanie notatek
 * Export / import
 
-
 ### Analiza ryzyka
 | Ryzyko                                                                                    | Poziom ryzyka | Prawdopodobieństwo | Potencjalne rozwiązania                                                                      |
 |-------------------------------------------------------------------------------------------|---------------|--------------------|----------------------------------------------------------------------------------------------|
@@ -87,16 +171,16 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 | Brak możliwości zapisywania wszystkich danych przez aktualną architekturę oprogramowania  | Średnie       | Niskie             | Implementacja możliwej do zrealizowania funkcjonalności, a dopiero później próba             |
 | Niska wydajność aplikacji przy synchronizacji dużych notatek                              | Niskie        | Niskie             | Sprawdzanie zmian w tle i selektywna aktualizacja notatek                                    |
 
+## Wybrana metodyka
+
+Do zarządzania projektem wybraliśmy metodykę Scrum. Wybraliśmy ją ze względu na to, że pozwali nam na regularne i iteracyjne sprawdzanie naszych postępów, co może się okazać kluczowe szczególnie w przypadku części projektu związanej z aplikacją mobilną - ze względu na nasz brak doświadczenia z platformą Android nie jesteśmy w stanie dokładnie oszacować czasu, który będzie potrzebny do zrealizowania poszczególnych zadań. Z każdym kolejnym sprintem będziemy wiedzieli na co poświęcić więcej czasu, którym zadaniom nadać większy priorytet i ile dane zadanie może realnie zająć czasu.
+
+
 ### Autorzy i zakres odpowiedzialności
 
 * [Michał Bar](https://github.com/MrPumpking) - rozwój aplikacji webowej, synchronizacja z Google API, testowanie aplikacji webowej, prowadzenie dokumentacji
 * [Maciej Ładoś](https://github.com/macieklad) - rozwój aplikacji mobilnej, synchronizacja z Google API, testowanie aplikacji mobilnej, prowadzenie aplikacji
 * [Kamil Woźnik](https://github.com/Valaraucoo) - rozwój aplikacji webowej, personalizacja edytora, testowanie aplikacji webowej, prowadzenie dokumentacji
 
-### Instrukcja instalacji i uruchomienia aplikacji
-
-TODO
-
-### Instrukcja wdrożenia aplikacji
-
-TODO
+## Licencja
+GPL-3.0 License
