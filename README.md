@@ -6,13 +6,25 @@ Wszystkie przyjęte przez nas cele zostały osiągnięte w planowanym czasie i p
 
 Poniższa dokumentacja dotyczy tylko aplikacji webowej - dokumentacja do aplikacji mobilnej znajduje się w [tym repozytorium](https://github.com/sp1-2021/Omni-Notes).
 
+* [O aplikacji](#o-aplikacji)
+* [Instrukcja uzytkownika](#instrukcja-uzytkownika)
+* [Wybrana metodyka](#wybrana-metodyka)
+* [Licencja](#licencja)
+* [Cele](#cele)
+* [Specyfikacja funkcjonalna projektu](#specyfikacja-funkcjonalna-projektu)
+* [Analiza ryzyka](#analiza-ryzyka)
+* [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
+* [Instrukcja instalacji i uruchomienia aplikacji](#instrukcja-instalacji-i-uruchomienia-aplikacji)
+* [Instrukcja wdrożenia aplikacji](#instrukcja-wdrożenia-aplikacji)
+
+
 ### O aplikacji
 
 **Omni Notes Web Editor** - edytor webowy do zarządzania notatkami, zapewniający schludny interfejs oraz prostotę działania. Edytor zapewnia synchronizację z aplikacją mobilną **Omni Notes** poprzez Twój Dysk Google - dzięki czemu użytkownik może korzystać jednocześnie z aplikacji internetowej oraz mobilnej wersji na smartfonie.
 
 Oryginalne repozytorium z aplikacją mobilną znajduje się [tutaj](https://github.com/federicoiosue/Omni-Notes).
 
-### Instrukcja użytkownika
+### Instrukcja uzytkownika
 
 Instrukcja użytkownika wraz z opisem interfejsu aplikacji znajduje się [tutaj](https://stonly.com/guide/en/omni-notes-web-ILlUY6MAWJ/Steps/443574).
 
@@ -35,7 +47,7 @@ GPL-3.0 License
 
 Głównym celem aplikacji było stworzenie edytora internetowego, który będzie w stanie synchronizować się z dyskiem Google, co umożliwiało edycję i tworzenie notatek zarówno w aplikacji internetowej, jak i aplikacji mobilnej, która została specjalnie.
 
-### Specyfikacja funkcjonalna projektu: 
+### Specyfikacja funkcjonalna projektu
 #### 1. Nowe funkcjonalności aplikacji mobilnej
 ##### 1.1 Uwierzytelnianie poprzez konto Google
 Użytkownik w trakcie użytkowania aplikacji może włączyć możliwość synchronizacji wybranych notatek z chmurą. Wymaga to zalogowania się do konta google.
