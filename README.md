@@ -181,7 +181,7 @@ Z przyjętych celów dla aplikacji webowej zrealizowaliśmy wszystkie, poza:
   aplikacji mobilnej - tagi i kategorie, przechowywane są w plikach z notatką, a przeszukiwanie plików tekstowych w celu
   ich znalezienia i wyodrębnienia wykroczyło poza zakres projektu.
 
-- upload załączników działa obsługiwany jest tylko przez aplikację mobilną. Jeśli chodzi natomiast o załączniki w
+- upload załączników obsługiwany jest tylko przez aplikację mobilną. Jeśli chodzi natomiast o załączniki w
   aplikacji webowej, to obsługujemy jedynie ich odczytywanie z Google Drive, ale nie sam upload, ze względu na to, że
   edytor tekstowy, z którego korzystamy podczas próby dodania obrazka, zamienia go na base64 lub wstawia bezpośredni
   link, co nie jest obsługiwane przez aplikację mobilną. W celu obsługi uploadu musielibyśmy edytować komponent edytora.
