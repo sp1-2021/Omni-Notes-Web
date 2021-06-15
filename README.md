@@ -8,7 +8,7 @@ synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglą
 
 1. [O aplikacji](#1-o-aplikacji)
 2. [Instrukcja instalacji i uruchomienia aplikacji](#2-instrukcja-instalacji-i-uruchomienia-aplikacji)
-3. [Instrukcja wdrożenia aplikacji](#3-instrukcja-wdroenia-aplikacji)
+3. [Instrukcja wdrożenia aplikacji](#3-instrukcja-wdrozenia-aplikacji)
 4. [Instrukcja uzytkownika](#4-instrukcja-uzytkownika)
 5. [Informacje o projekcie](#5-informacje-o-projekcie)
    - [Cele](#51-cele)
@@ -16,7 +16,7 @@ synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglą
    - [Zrealizowane funkcjonalnosci](#53-zrealizowane-funkcjonalnosci)
    - [Analiza ryzyka](#54-analiza-ryzyka)
    - [Wybrana metodyka](#55-wybrana-metodyka)
-   - [Autorzy i zakres odpowiedzialności](#56-autorzy-i-zakres-odpowiedzialnoci)
+   - [Autorzy i zakres odpowiedzialności](#56-autorzy-i-zakres-odpowiedzialnosci)
 6. [Oryginalna dokumentacja](#6-oryginalna-dokumentacja)
 7. [Licencja](#7-licencja)
 
@@ -98,7 +98,7 @@ yarn dev
 
 Aplikacja domyślnie jest dostępna pod adresem `http://localhost:3000`
 
-## 3. Instrukcja wdrożenia aplikacji
+## 3. Instrukcja wdrozenia aplikacji
 
 W celu utworzenia buildu produkcyjnego należy posłużyć się poleceniem
 
@@ -212,7 +212,7 @@ Podsumowując:
 * Tablica sprintu będzie dostępna na platformie [GitHub](https://github.com/orgs/sp1-2021/projects)
 * Po zakończeniu sprintu zespół podsumuje swoje prace i przedstawi ich wynik prowadzącemu
 
-### 5.6. Autorzy i zakres odpowiedzialności
+### 5.6. Autorzy i zakres odpowiedzialnosci
 
 * [Michał Bar](https://github.com/MrPumpking) - rozwój aplikacji webowej, synchronizacja z Google API, testowanie
   aplikacji webowej, prowadzenie dokumentacji
