@@ -11,13 +11,11 @@ synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglą
 3. [Instrukcja wdrożenia aplikacji](#3-instrukcja-wdrożenia-aplikacji)
 4. [Instrukcja uzytkownika](#4-instrukcja-uzytkownika)
 5. [Informacje o projekcie](#5-informacje-o-projekcie)
-
-- [Cele](#cele)
-- [Specyfikacja funkcjonalna projektu](#specyfikacja-funkcjonalna-projektu)
-- [Analiza ryzyka](#analiza-ryzyka)
-- [Wybrana metodyka](#wybrana-metodyka)
-- [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
-
+   - [Cele](#cele)
+   - [Specyfikacja funkcjonalna projektu](#specyfikacja-funkcjonalna-projektu)
+   - [Analiza ryzyka](#analiza-ryzyka)
+   - [Wybrana metodyka](#wybrana-metodyka)
+   - [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
 6. [Oryginalna dokumentacja](#6-oryginalna-dokumentacja)
 7. [Licencja](#7-licencja)
 
