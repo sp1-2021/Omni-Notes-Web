@@ -15,7 +15,8 @@ Naszym zadaniem w ramach przedmiotu Studio Projektowe jest dodanie do open-sourc
    - [Analiza ryzyka](#analiza-ryzyka)
    - [Wybrana metodyka](#wybrana-metodyka)
    - [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
-6. [Licencja](#licencja)
+6. [Oryginalna dokumentacja](#oryginalna-dokumentacja)
+7. [Licencja](#licencja)
 
 
 
@@ -181,6 +182,9 @@ Do zarządzania projektem wybraliśmy metodykę Scrum. Wybraliśmy ją ze wzglę
 * [Michał Bar](https://github.com/MrPumpking) - rozwój aplikacji webowej, synchronizacja z Google API, testowanie aplikacji webowej, prowadzenie dokumentacji
 * [Maciej Ładoś](https://github.com/macieklad) - rozwój aplikacji mobilnej, synchronizacja z Google API, testowanie aplikacji mobilnej, prowadzenie aplikacji
 * [Kamil Woźnik](https://github.com/Valaraucoo) - rozwój aplikacji webowej, personalizacja edytora, testowanie aplikacji webowej, prowadzenie dokumentacji
+
+## Oryginalna dokumentacja
+https://logout400.gitbook.io/omni-notes/
 
 ## Licencja
 GPL-3.0 License
