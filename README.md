@@ -5,28 +5,28 @@ Poniższa aplikacja nie zawiera w sobie informacji o wersji mobilnej aplikacji. 
 Naszym zadaniem w ramach przedmiotu Studio Projektowe jest dodanie do open-source'owej aplikacji Omni-Notes możliwość synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglądarkę internetową.
 
 
-1. [O aplikacji](#o-aplikacji)
-2. [Instrukcja instalacji i uruchomienia aplikacji](#instrukcja-instalacji-i-uruchomienia-aplikacji)
-3. [Instrukcja wdrożenia aplikacji](#instrukcja-wdrożenia-aplikacji)
-4. [Instrukcja uzytkownika](#instrukcja-uzytkownika)
-5. [Informacje o projekcie](#informacje-o-projekcie)
+1. [O aplikacji](#1-o-aplikacji)
+2. [Instrukcja instalacji i uruchomienia aplikacji](#2-instrukcja-instalacji-i-uruchomienia-aplikacji)
+3. [Instrukcja wdrożenia aplikacji](#3-instrukcja-wdrożenia-aplikacji)
+4. [Instrukcja uzytkownika](#4-instrukcja-uzytkownika)
+5. [Informacje o projekcie](#5-informacje-o-projekcie)
    - [Cele](#cele)
    - [Specyfikacja funkcjonalna projektu](#specyfikacja-funkcjonalna-projektu)
    - [Analiza ryzyka](#analiza-ryzyka)
    - [Wybrana metodyka](#wybrana-metodyka)
    - [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
-6. [Oryginalna dokumentacja](#oryginalna-dokumentacja)
-7. [Licencja](#licencja)
+6. [Oryginalna dokumentacja](#6-oryginalna-dokumentacja)
+7. [Licencja](#7-licencja)
 
 
 
-## O aplikacji
+## 1. O aplikacji
 
 **Omni Notes Web Editor** - edytor webowy do zarządzania notatkami, zapewniający schludny interfejs oraz prostotę działania. Edytor zapewnia synchronizację z aplikacją mobilną **Omni Notes** poprzez Twój Dysk Google - dzięki czemu użytkownik może korzystać jednocześnie z aplikacji internetowej oraz mobilnej wersji na smartfonie.
 
 Oryginalne repozytorium z aplikacją mobilną znajduje się [tutaj](https://github.com/federicoiosue/Omni-Notes).
 
-## Instrukcja instalacji i uruchomienia aplikacji
+## 2. Instrukcja instalacji i uruchomienia aplikacji
 
 ### Instalacja
 
@@ -95,7 +95,7 @@ yarn dev
 
 Aplikacja domyślnie jest dostępna pod adresem `http://localhost:3000`
 
-## Instrukcja wdrożenia aplikacji
+## 3. Instrukcja wdrożenia aplikacji
 
 W celu utworzenia buildu produkcyjnego należy posłużyć się poleceniem
 
@@ -114,7 +114,7 @@ sekcji [Deployment w dokumentacji](https://nextjs.org/docs/deployment) na oficja
 
 
 
-## Instrukcja uzytkownika
+## 4. Instrukcja uzytkownika
 
 Instrukcja użytkownika wraz z opisem interfejsu aplikacji znajduje się [tutaj](https://stonly.com/guide/en/omni-notes-web-ILlUY6MAWJ/Steps/443574).
 
@@ -125,7 +125,7 @@ Podsumowując:
 * Tablica sprintu będzie dostępna na platformie [GitHub](https://github.com/orgs/sp1-2021/projects)
 * Po zakończeniu sprintu zespół podsumuje swoje prace i przedstawi ich wynik prowadzącemu
 
-## Informacje o projekcie
+## 5. Informacje o projekcie
 
 ### Cele
 
@@ -183,8 +183,8 @@ Do zarządzania projektem wybraliśmy metodykę Scrum. Wybraliśmy ją ze wzglę
 * [Maciej Ładoś](https://github.com/macieklad) - rozwój aplikacji mobilnej, synchronizacja z Google API, testowanie aplikacji mobilnej, prowadzenie aplikacji
 * [Kamil Woźnik](https://github.com/Valaraucoo) - rozwój aplikacji webowej, personalizacja edytora, testowanie aplikacji webowej, prowadzenie dokumentacji
 
-## Oryginalna dokumentacja
+## 6. Oryginalna dokumentacja
 https://logout400.gitbook.io/omni-notes/
 
-## Licencja
+## 7. Licencja
 GPL-3.0 License
