@@ -129,12 +129,17 @@ została specjalnie.
 
 ### 5.2. Specyfikacja funkcjonalna projektu
 
-Z przyjętych celów zrealizowaliśmy wszystkie, poza kategoryzowaniem i tagowaniem notatek w aplikacji webowej, ze względu
-na sposób działania tego systemu w oryginalnej aplikacji mobilnej - tagi i kategorie, przechowywane są w plikach z
-notatką, a przeszukiwanie plików tekstowych w celu ich znalezienia i wyodrębnienia wykroczyło poza zakres projektu.
-Jeśli chodzi natomiast o załączniki w aplikacji webowej, to obsługujemy jedynie ich odczytywanie z Google Drive, ale nie
-sam upload, ze względu na to, że edytor tekstowy, z którego korzystamy podczas próby dodania obrazka, zamienia go na
-base64 lub wstawia bezpośredni link, co nie jest obsługiwane przez aplikację mobilną.
+Z celów dla aplikacji mobilnej zrealizowaliśmy wszystkie poza wyborem katalogu, w którym ma odbywać się synchronizacja.
+W aktualnej wersji notatki przechowywane są w root katalogu na Google Drive. Podjęliśmy taką decyzję ze względu na
+poziom skomplikowania przeszukiwania struktury z folderami w Google Drive.
+
+Z przyjętych celów dla aplikacji webowej zrealizowaliśmy wszystkie, poza kategoryzowaniem i tagowaniem notatek w
+aplikacji webowej, ze względu na sposób działania tego systemu w oryginalnej aplikacji mobilnej - tagi i kategorie,
+przechowywane są w plikach z notatką, a przeszukiwanie plików tekstowych w celu ich znalezienia i wyodrębnienia
+wykroczyło poza zakres projektu. Jeśli chodzi natomiast o załączniki w aplikacji webowej, to obsługujemy jedynie ich
+odczytywanie z Google Drive, ale nie sam upload, ze względu na to, że edytor tekstowy, z którego korzystamy podczas
+próby dodania obrazka, zamienia go na base64 lub wstawia bezpośredni link, co nie jest obsługiwane przez aplikację
+mobilną.
 
 #### 5.2.1. Nowe funkcjonalności aplikacji mobilnej
 
