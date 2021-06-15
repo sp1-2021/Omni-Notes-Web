@@ -13,9 +13,10 @@ synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglą
 5. [Informacje o projekcie](#5-informacje-o-projekcie)
    - [Cele](#51-cele)
    - [Specyfikacja funkcjonalna projektu](#52-specyfikacja-funkcjonalna-projektu)
-   - [Analiza ryzyka](#53-analiza-ryzyka)
-   - [Wybrana metodyka](#54-wybrana-metodyka)
-   - [Autorzy i zakres odpowiedzialności](#55-autorzy-i-zakres-odpowiedzialnoci)
+   - [Zrealizowane funkcjonalnosci](#53-zrealizowane-funkcjonalnoci)
+   - [Analiza ryzyka](#54-analiza-ryzyka)
+   - [Wybrana metodyka](#55-wybrana-metodyka)
+   - [Autorzy i zakres odpowiedzialności](#56-autorzy-i-zakres-odpowiedzialnoci)
 6. [Oryginalna dokumentacja](#6-oryginalna-dokumentacja)
 7. [Licencja](#7-licencja)
 
@@ -129,18 +130,6 @@ została specjalnie.
 
 ### 5.2. Specyfikacja funkcjonalna projektu
 
-Z celów dla aplikacji mobilnej zrealizowaliśmy wszystkie poza wyborem katalogu, w którym ma odbywać się synchronizacja.
-W aktualnej wersji notatki przechowywane są w root katalogu na Google Drive. Podjęliśmy taką decyzję ze względu na
-poziom skomplikowania przeszukiwania struktury z folderami w Google Drive.
-
-Z przyjętych celów dla aplikacji webowej zrealizowaliśmy wszystkie, poza kategoryzowaniem i tagowaniem notatek w
-aplikacji webowej, ze względu na sposób działania tego systemu w oryginalnej aplikacji mobilnej - tagi i kategorie,
-przechowywane są w plikach z notatką, a przeszukiwanie plików tekstowych w celu ich znalezienia i wyodrębnienia
-wykroczyło poza zakres projektu. Jeśli chodzi natomiast o załączniki w aplikacji webowej, to obsługujemy jedynie ich
-odczytywanie z Google Drive, ale nie sam upload, ze względu na to, że edytor tekstowy, z którego korzystamy podczas
-próby dodania obrazka, zamienia go na base64 lub wstawia bezpośredni link, co nie jest obsługiwane przez aplikację
-mobilną.
-
 #### 5.2.1. Nowe funkcjonalności aplikacji mobilnej
 
 ##### 5.2.1.1 Uwierzytelnianie poprzez konto Google
@@ -180,7 +169,26 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 * Tagowanie notatek
 * Export / import
 
-### 5.3. Analiza ryzyka
+### 5.3 Zrealizowane funkcjonalności
+
+Z celów dla aplikacji mobilnej zrealizowaliśmy wszystkie poza wyborem katalogu, w którym ma odbywać się synchronizacja.
+W aktualnej wersji notatki przechowywane są w root katalogu na Google Drive. Podjęliśmy taką decyzję ze względu na
+poziom skomplikowania przeszukiwania struktury z folderami w Google Drive.
+
+Z przyjętych celów dla aplikacji webowej zrealizowaliśmy wszystkie, poza:
+
+- kategoryzowaniem i tagowaniem notatek w aplikacji webowej, ze względu na sposób działania tego systemu w oryginalnej
+  aplikacji mobilnej - tagi i kategorie, przechowywane są w plikach z notatką, a przeszukiwanie plików tekstowych w celu
+  ich znalezienia i wyodrębnienia wykroczyło poza zakres projektu.
+
+- upload załączników działa obsługiwany jest tylko przez aplikację mobilną. Jeśli chodzi natomiast o załączniki w
+  aplikacji webowej, to obsługujemy jedynie ich odczytywanie z Google Drive, ale nie sam upload, ze względu na to, że
+  edytor tekstowy, z którego korzystamy podczas próby dodania obrazka, zamienia go na base64 lub wstawia bezpośredni
+  link, co nie jest obsługiwane przez aplikację mobilną. W celu obsługi uploadu musielibyśmy edytować komponent edytora.
+- import / export notatek - uznaliśmy, że podobna funkcjonalność jest już realizowana przez Google Drive w postaci
+  pobierania i uploadowania plików
+
+### 5.4. Analiza ryzyka
 
 | Ryzyko                                                                                    | Poziom ryzyka | Prawdopodobieństwo | Potencjalne rozwiązania                                                                      |
 |-------------------------------------------------------------------------------------------|---------------|--------------------|----------------------------------------------------------------------------------------------|
@@ -189,7 +197,7 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 | Brak możliwości zapisywania wszystkich danych przez aktualną architekturę oprogramowania  | Średnie       | Niskie             | Implementacja możliwej do zrealizowania funkcjonalności, a dopiero później próba             |
 | Niska wydajność aplikacji przy synchronizacji dużych notatek                              | Niskie        | Niskie             | Sprawdzanie zmian w tle i selektywna aktualizacja notatek                                    |
 
-### 5.4. Wybrana metodyka
+### 5.5. Wybrana metodyka
 
 Do zarządzania projektem wybraliśmy metodykę Scrum. Wybraliśmy ją ze względu na to, że pozwali nam na regularne i
 iteracyjne sprawdzanie naszych postępów, co może się okazać kluczowe szczególnie w przypadku części projektu związanej z
@@ -204,7 +212,7 @@ Podsumowując:
 * Tablica sprintu będzie dostępna na platformie [GitHub](https://github.com/orgs/sp1-2021/projects)
 * Po zakończeniu sprintu zespół podsumuje swoje prace i przedstawi ich wynik prowadzącemu
 
-### 5.5. Autorzy i zakres odpowiedzialności
+### 5.6. Autorzy i zakres odpowiedzialności
 
 * [Michał Bar](https://github.com/MrPumpking) - rozwój aplikacji webowej, synchronizacja z Google API, testowanie
   aplikacji webowej, prowadzenie dokumentacji
