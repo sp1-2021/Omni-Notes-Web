@@ -4,6 +4,8 @@ Naszym zadaniem w ramach przedmiotu Studio Projektowe jest dodanie do open-sourc
 
 Wszystkie przyjęte przez nas cele zostały osiągnięte w planowanym czasie i przy planowanych zasobach.
 
+Poniższa dokumentacja dotyczy tylko aplikacji webowej - dokumentacja do aplikacji mobilnej znajduje się w [tym repozytorium](https://github.com/sp1-2021/Omni-Notes).
+
 ### O aplikacji
 
 **Omni Notes Web Editor** - edytor webowy do zarządzania notatkami, zapewniający schludny interfejs oraz prostotę działania. Edytor zapewnia synchronizację z aplikacją mobilną **Omni Notes** poprzez Twój Dysk Google - dzięki czemu użytkownik może korzystać jednocześnie z aplikacji internetowej oraz mobilnej wersji na smartfonie.
