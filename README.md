@@ -128,7 +128,12 @@ została specjalnie.
 
 ### Specyfikacja funkcjonalna projektu
 
-Wszystkie przyjęte przez nas cele zostały osiągnięte w planowanym czasie i przy planowanych zasobach.
+Z przyjętych celów zrealizowaliśmy wszystkie, poza kategoryzowaniem i tagowaniem notatek w aplikacji webowej, ze względu
+na sposób działania tego systemu w oryginalnej aplikacji mobilnej - tagi i kategorie, przechowywane są w plikach z
+notatką, a przeszukiwanie plików tekstowych w celu ich znalezienia i wyodrębnienia wykroczyło poza zakres projektu.
+Jeśli chodzi natomiast o załączniki w aplikacji webowej, to obsługujemy jedynie ich odczytywanie z Google Drive, ale nie
+sam upload, ze względu na to, że edytor tekstowy, z którego korzystamy podczas próby dodania obrazka, zamienia go na
+base64 lub wstawia bezpośredni link, co nie jest obsługiwane przez aplikację mobilną.
 
 #### 1. Nowe funkcjonalności aplikacji mobilnej
 
