@@ -169,7 +169,7 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 * Tagowanie notatek
 * Export / import
 
-### 5.3 Zrealizowane funkcjonalności
+### 5.3 Zrealizowane funkcjonalnosci
 
 Z celów dla aplikacji mobilnej zrealizowaliśmy wszystkie poza wyborem katalogu, w którym ma odbywać się synchronizacja.
 W aktualnej wersji notatki przechowywane są w root katalogu na Google Drive. Podjęliśmy taką decyzję ze względu na
