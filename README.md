@@ -13,7 +13,7 @@ synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglą
 5. [Informacje o projekcie](#5-informacje-o-projekcie)
    - [Cele](#51-cele)
    - [Specyfikacja funkcjonalna projektu](#52-specyfikacja-funkcjonalna-projektu)
-   - [Zrealizowane funkcjonalnosci](#53-zrealizowane-funkcjonalnoci)
+   - [Zrealizowane funkcjonalnosci](#53-zrealizowane-funkcjonalnosci)
    - [Analiza ryzyka](#54-analiza-ryzyka)
    - [Wybrana metodyka](#55-wybrana-metodyka)
    - [Autorzy i zakres odpowiedzialności](#56-autorzy-i-zakres-odpowiedzialnoci)
