@@ -8,14 +8,14 @@ synchronizacji notatek w chmurze. Dostęp musi być też możliwy przez przeglą
 
 1. [O aplikacji](#1-o-aplikacji)
 2. [Instrukcja instalacji i uruchomienia aplikacji](#2-instrukcja-instalacji-i-uruchomienia-aplikacji)
-3. [Instrukcja wdrożenia aplikacji](#3-instrukcja-wdrożenia-aplikacji)
+3. [Instrukcja wdrożenia aplikacji](#3-instrukcja-wdroenia-aplikacji)
 4. [Instrukcja uzytkownika](#4-instrukcja-uzytkownika)
 5. [Informacje o projekcie](#5-informacje-o-projekcie)
-   - [Cele](#cele)
-   - [Specyfikacja funkcjonalna projektu](#specyfikacja-funkcjonalna-projektu)
-   - [Analiza ryzyka](#analiza-ryzyka)
-   - [Wybrana metodyka](#wybrana-metodyka)
-   - [Autorzy i zakres odpowiedzialności](#autorzy-i-zakres-odpowiedzialności)
+   - [Cele](#51-cele)
+   - [Specyfikacja funkcjonalna projektu](#52-specyfikacja-funkcjonalna-projektu)
+   - [Analiza ryzyka](#53-analiza-ryzyka)
+   - [Wybrana metodyka](#54-wybrana-metodyka)
+   - [Autorzy i zakres odpowiedzialności](#55-autorzy-i-zakres-odpowiedzialnoci)
 6. [Oryginalna dokumentacja](#6-oryginalna-dokumentacja)
 7. [Licencja](#7-licencja)
 
@@ -29,7 +29,7 @@ Oryginalne repozytorium z aplikacją mobilną znajduje się [tutaj](https://gith
 
 ## 2. Instrukcja instalacji i uruchomienia aplikacji
 
-### Instalacja
+### 2.1. Instalacja
 
 Aplikacja do poprawnego działania wymaga zainstalowanego środowiska [Node](https://nodejs.org/en/) w wersji 10.13 lub
 późniejszej.
@@ -49,7 +49,7 @@ yarn install
 
 3. Po zainstalowaniu modułów należy przejść do konfiguracji aplikacji
 
-### Konfiguracja
+### 2.2. Konfiguracja
 
 Konfiguracja aplikacji odczytywana jest ze zmiennych środowiskowych. Bazowa konfiguracja znajduje się w pliku `.env`. W
 lokalnym środowisku należy utworzyć plik `.env.local`, który nie będzie częścią publicznie dostępnego repozytorium, a
@@ -57,7 +57,7 @@ następnie przekopiować do niego bazową konfigurację z pliku `.env`, i uzupe�
 przypadku deploymentu produkcyjnego, można wykorzystać plik `.env.production.local` lub bezpośrednio ustawić zmienne
 środowiskowe w systemie
 
-#### Uwierzytelnianie
+#### 2.2.1. Uwierzytelnianie
 
 Aplikacja do poprawnego działania wymaga skonfigurowania uwierzytelnienia OAuth za pomocą Google. W tym celu należy
 utworzyć poświadczenia dla projektu (opis procesu znajdziemy
@@ -74,7 +74,7 @@ GOOGLE_CLIENT_SECRET=
 
 Uzupełniając klucze `GOOGLE_CLIENT_ID` oraz `GOOGLE_CLIENT_SECRET` wartościami uzyskanymi od Google.
 
-#### Dostęp do Google Drive
+#### 2.2.2. Dostęp do Google Drive
 
 Domyślnie aplikacja działa na
 ograniczonym [scope dostępu do Google Drive](https://developers.google.com/drive/api/v2/about-auth), przez co może
@@ -85,8 +85,9 @@ wcześniej plik `.env.local` dodać linijkę:
 ```bash
 GOOGLE_DRIVE_FULL_ACCESS_SCOPE_ENABLED=true
 ```
+Należy jednak wspomnieć, że pliki, które dodawane są przez użytkownika na dysk bezpośrednio, pozbawione są metadanych tworzonych przez aplikację (tytuł, wycinek i data), w związku z czym mogą być na początku niepoprawnie wyświetlane. Metadane zostaną zaktualizowane po pierwszym zapisie pliku dokonanym przez aplikację.
 
-### Uruchomienie środowiska developerskiego
+### 2.3. Uruchomienie środowiska developerskiego
 
 Aby uruchomić środowisko należy użyć polecenia
 
@@ -120,13 +121,13 @@ się [tutaj](https://stonly.com/guide/en/omni-notes-web-ILlUY6MAWJ/Steps/443574)
 
 ## 5. Informacje o projekcie
 
-### Cele
+### 5.1. Cele
 
 Głównym celem aplikacji było stworzenie edytora internetowego, który będzie w stanie synchronizować się z dyskiem
 Google, co umożliwiało edycję i tworzenie notatek zarówno w aplikacji internetowej, jak i aplikacji mobilnej, która
 została specjalnie.
 
-### Specyfikacja funkcjonalna projektu
+### 5.2. Specyfikacja funkcjonalna projektu
 
 Z przyjętych celów zrealizowaliśmy wszystkie, poza kategoryzowaniem i tagowaniem notatek w aplikacji webowej, ze względu
 na sposób działania tego systemu w oryginalnej aplikacji mobilnej - tagi i kategorie, przechowywane są w plikach z
@@ -135,29 +136,29 @@ Jeśli chodzi natomiast o załączniki w aplikacji webowej, to obsługujemy jedy
 sam upload, ze względu na to, że edytor tekstowy, z którego korzystamy podczas próby dodania obrazka, zamienia go na
 base64 lub wstawia bezpośredni link, co nie jest obsługiwane przez aplikację mobilną.
 
-#### 1. Nowe funkcjonalności aplikacji mobilnej
+#### 5.2.1. Nowe funkcjonalności aplikacji mobilnej
 
-##### 1.1 Uwierzytelnianie poprzez konto Google
+##### 5.2.1.1 Uwierzytelnianie poprzez konto Google
 
 Użytkownik w trakcie użytkowania aplikacji może włączyć możliwość synchronizacji wybranych notatek z chmurą. Wymaga to
 zalogowania się do konta google.
 
-##### 1.2 Wybór lokalizacji notatek w chmurze
+##### 5.2.1.2 Wybór lokalizacji notatek w chmurze
 
 Kiedy użytkownik jest zalogowany i chce zsynchronizować notatkę z chmurą, musi najpierw wybrać katalog w którym będą
 umieszczane metadane notatek oraz plik bazy danych.
 
-##### 1.3 Synchronizacja notatek z chmurą
+##### 5.2.1.3 Synchronizacja notatek z chmurą
 
 Notatki synchronizowane w trakcie odczytu ich treści są pobierane z chmury, wraz z zawartością notatki pobierane są
 również załączniki. Podczas zapisu notatki, jej treść jest zapisywana na dysku w chmurze, wszystkie nowe oraz zmienione
 załączniki są ponownie przekazywane do chmury. Zmiana załącznika wykrywana jest poprzez sprawdzenie sygnatury pliku
 
-#### 2. Aplikacja webowa
+#### 5.2.2. Aplikacja webowa
 
 Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 
-##### 2.1 MVP - implementacja bazowych funkcjonalności aplikacji mobilnej w aplikacji webowej
+##### 5.2.2.1 MVP - implementacja bazowych funkcjonalności aplikacji mobilnej w aplikacji webowej
 
 * Logowanie do usługi Google Drive
 * Synchronizacja notatek
@@ -165,7 +166,7 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 * Usuwanie notatek
 * Wsparcie dla i18n
 
-##### 2.2 Implementacja pozostałych funkcjonalności zawartych w aplikacji mobilnej
+##### 5.2.2.2 Implementacja pozostałych funkcjonalności zawartych w aplikacji mobilnej
 
 * Obsługa załączników
 * Archiwizacja notatek
@@ -174,7 +175,7 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 * Tagowanie notatek
 * Export / import
 
-### Analiza ryzyka
+### 5.3. Analiza ryzyka
 
 | Ryzyko                                                                                    | Poziom ryzyka | Prawdopodobieństwo | Potencjalne rozwiązania                                                                      |
 |-------------------------------------------------------------------------------------------|---------------|--------------------|----------------------------------------------------------------------------------------------|
@@ -183,7 +184,7 @@ Rozwój aplikacji webowej podzielony zostanie na dwa główne etapy:
 | Brak możliwości zapisywania wszystkich danych przez aktualną architekturę oprogramowania  | Średnie       | Niskie             | Implementacja możliwej do zrealizowania funkcjonalności, a dopiero później próba             |
 | Niska wydajność aplikacji przy synchronizacji dużych notatek                              | Niskie        | Niskie             | Sprawdzanie zmian w tle i selektywna aktualizacja notatek                                    |
 
-## Wybrana metodyka
+### 5.4. Wybrana metodyka
 
 Do zarządzania projektem wybraliśmy metodykę Scrum. Wybraliśmy ją ze względu na to, że pozwali nam na regularne i
 iteracyjne sprawdzanie naszych postępów, co może się okazać kluczowe szczególnie w przypadku części projektu związanej z
@@ -198,7 +199,7 @@ Podsumowując:
 * Tablica sprintu będzie dostępna na platformie [GitHub](https://github.com/orgs/sp1-2021/projects)
 * Po zakończeniu sprintu zespół podsumuje swoje prace i przedstawi ich wynik prowadzącemu
 
-### Autorzy i zakres odpowiedzialności
+### 5.5. Autorzy i zakres odpowiedzialności
 
 * [Michał Bar](https://github.com/MrPumpking) - rozwój aplikacji webowej, synchronizacja z Google API, testowanie
   aplikacji webowej, prowadzenie dokumentacji
