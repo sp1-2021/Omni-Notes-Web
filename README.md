@@ -1,6 +1,6 @@
 # Omni Notes Web Editor
 
-Poniższa aplikacja nie zawiera w sobie informacji o wersji mobilnej aplikacji. Dokumentacja dla wersji mobilnej znajduje
+Poniższa dokumentacja nie zawiera w sobie wszystkich informacji o wersji mobilnej aplikacji. Dokumentacja dla wersji mobilnej znajduje
 się w [tym repozytorium](https://github.com/sp1-2021/Omni-Notes).
 
 Naszym zadaniem w ramach przedmiotu Studio Projektowe jest dodanie do open-source'owej aplikacji Omni-Notes możliwość
